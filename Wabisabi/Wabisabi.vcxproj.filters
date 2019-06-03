@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wabisabi">
+      <UniqueIdentifier>{67FB29DD-53C8-84E8-7CE1-7290680DBA76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wabisabi\Events">
+      <UniqueIdentifier>{6BEDB3BA-D778-217F-E089-A4734C947D7F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Platform\Windows\InputWindows.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi.h" />
+    <ClInclude Include="src\Wabisabi\Application.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Core.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\EntryPoint.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Events\Event.h">
+      <Filter>Wabisabi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Events\KeyEvent.h">
+      <Filter>Wabisabi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Events\MouseEvent.h">
+      <Filter>Wabisabi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Events\WindowEvent.h">
+      <Filter>Wabisabi\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Input.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\KeyCodes.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Log.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\MouseCodes.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Window.h">
+      <Filter>Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wbpch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Platform\Windows\InputWindows.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Wabisabi\Application.cpp">
+      <Filter>Wabisabi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Wabisabi\Log.cpp">
+      <Filter>Wabisabi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wbpch.cpp" />
+  </ItemGroup>
+</Project>
