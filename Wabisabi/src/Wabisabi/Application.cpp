@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Input.h"
 #include "KeyCodes.h"
+#include <glad/glad.h>
 namespace Wabi {
 	Application* Application::s_Instance = nullptr;
 #define BIND_FN(x) std::bind(&Application::##x, this, std::placeholders::_1)

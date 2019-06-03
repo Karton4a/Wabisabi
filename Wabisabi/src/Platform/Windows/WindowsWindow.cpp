@@ -4,6 +4,7 @@
 #include "Wabisabi/Events/KeyEvent.h"
 #include "Wabisabi/Events/MouseEvent.h"
 #include "Wabisabi/Events/WindowEvent.h"
+#include <glad/glad.h>
 namespace Wabisabi 
 {
 	static bool s_GLFWInit = false;
@@ -66,6 +67,7 @@ namespace Wabisabi
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		WB_CORE_INFO("Window Created {0} X {1}",props.Width,props.Height);
 		glfwMakeContextCurrent(m_Window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 		glfwSetKeyCallback(m_Window, 

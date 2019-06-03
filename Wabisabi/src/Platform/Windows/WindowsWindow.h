@@ -1,6 +1,7 @@
 #pragma once
 #include"wbpch.h"
 #include "Wabisabi/Window.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Wabisabi

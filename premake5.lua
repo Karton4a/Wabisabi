@@ -56,6 +56,7 @@ project 'Wabisabi'
 		defines
 		{
 			libdefine,
+			"GLFW_INCLUDE_NONE",
 		}
 		postbuildcommands
 		{
