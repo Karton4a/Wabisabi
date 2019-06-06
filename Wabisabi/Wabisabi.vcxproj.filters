@@ -59,6 +59,8 @@
       <Filter>Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\wbpch.h" />
+    <ClInclude Include="src\Wabisabi\VertexBuffer.h" />
+    <ClInclude Include="src\Wabisabi\OpenglVertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp">
@@ -74,5 +76,7 @@
       <Filter>Wabisabi</Filter>
     </ClCompile>
     <ClCompile Include="src\wbpch.cpp" />
+    <ClCompile Include="src\Wabisabi\VertexBuffer.cpp" />
+    <ClCompile Include="src\Wabisabi\OpenglVertexBuffer.cpp" />
   </ItemGroup>
 </Project>

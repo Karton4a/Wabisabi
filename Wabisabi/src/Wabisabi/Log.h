@@ -31,3 +31,6 @@ namespace Wabisabi
 #define WB_WARN(...)          ::Wabisabi::Log::GetAppLogger()->warn(__VA_ARGS__)
 #define WB_ERROR(...)         ::Wabisabi::Log::GetAppLogger()->error(__VA_ARGS__)
 #define WB_FATAL(...)         ::Wabisabi::Log::GetAppLogger()->fatal(__VA_ARGS__)
+
+#define WB_ASSERT(x, ...) { if(!(x)) { WB_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#define WB_CORE_ASSERT(x, ...) { if(!(x)) { WB_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

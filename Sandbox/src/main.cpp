@@ -10,12 +10,10 @@ public:
 	}
 	~Sandbox()
 	{
-		
+			
 	}
-
 	void Init() override
 	{
-		printf("App Init\n");
 	}
 	void Update() override
 	{
@@ -23,12 +21,14 @@ public:
 	}
 	void Draw() override
 	{
-		printf("App Draw\n");
+		//printf("App Draw\n");
 	}
+private:
+	
 };
 
 
-Wabi::Application* CreateApplication()
+Wabi::Application* Wabi::CreateApplication()
 {
 	return new Sandbox();
 }

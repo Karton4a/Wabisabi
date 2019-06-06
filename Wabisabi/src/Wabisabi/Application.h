@@ -19,7 +19,8 @@ namespace Wabi {
 		virtual void OnEvent(Event& e);
 		inline static Application& Get() { return *s_Instance; };
 		inline const Window& GetWindow() const { return *m_Window;};
-		virtual bool OnWindowsClose(WindowClose& e);
+		virtual bool OnWindowClose(WindowClose& e);
+		virtual bool OnWindowResize(WindowResize& e);
 	protected:
 		std::shared_ptr<Window> m_Window;
 		//Window* m_Window;
@@ -27,5 +28,7 @@ namespace Wabi {
 	private:
 		static Application* s_Instance;
 	};
+
+	Application* CreateApplication();
 }
 

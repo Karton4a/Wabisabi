@@ -2,16 +2,20 @@
 
 
 #ifndef NO_DLL_ENTRY_POINT
+
 #include "Input.h"
 #include "Log.h"
-extern Wabi::Application* CreateApplication();
+#include "Application.h"
+
+//extern Wabi::Application* CreateApplication();
 extern void DeleteApplication(Wabi::Application* app);
+
 
 int main()
 {
 	Wabi::Log::Init();
 	WB_CORE_WARN("Logger Init");
-	auto app = CreateApplication();
+	auto app = Wabi::CreateApplication();
 	
 	Wabi::Application::Get().Run();
 	

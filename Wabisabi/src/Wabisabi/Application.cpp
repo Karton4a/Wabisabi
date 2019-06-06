@@ -6,8 +6,10 @@
 #include "KeyCodes.h"
 #include <glad/glad.h>
 namespace Wabi {
+
 	Application* Application::s_Instance = nullptr;
-#define BIND_FN(x) std::bind(&Application::##x, this, std::placeholders::_1)
+	#define BIND_FN(x) std::bind(&Application::##x, this, std::placeholders::_1)
+
 	Application::Application()
 	{
 		if (s_Instance != nullptr)
@@ -27,6 +29,7 @@ namespace Wabi {
 	}
 	void Application::Run()
 	{
+		Init();
 		while (m_Running)
 		{	
 			Update();
@@ -49,11 +52,17 @@ namespace Wabi {
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher disp(e);
-		disp.Dispatch<WindowClose>(BIND_FN(OnWindowsClose));
+		disp.Dispatch<WindowClose>(BIND_FN(OnWindowClose));
+		disp.Dispatch<WindowResize>(BIND_FN(OnWindowResize));
 	}
-	bool Application::OnWindowsClose(WindowClose& e)
+	bool Application::OnWindowClose(WindowClose& e)
 	{
 		m_Running = false;
+		return true;
+	}
+	bool Application::OnWindowResize(WindowResize& e)
+	{
+		//glViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 		return true;
 	}
 }

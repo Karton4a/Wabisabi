@@ -5,6 +5,7 @@
 #include "Wabisabi/Events/MouseEvent.h"
 #include "Wabisabi/Events/WindowEvent.h"
 #include <glad/glad.h>
+
 namespace Wabisabi 
 {
 	static bool s_GLFWInit = false;
@@ -161,7 +162,7 @@ namespace Wabisabi
 	{
 		WindowsWindow::s_objCount--;
 		glfwDestroyWindow(m_Window);
-		WB_CORE_INFO("Window Destroted");
+		WB_CORE_INFO("Window Destroyed");
 		if (WindowsWindow::s_objCount == 0)
 		{
 			glfwTerminate();

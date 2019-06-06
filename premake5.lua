@@ -13,11 +13,13 @@ include 'Wabisabi/vendor/Glad'
 
 libtype = 'static'
 if(libtype == 'static') then
-	libdefine = 'WB_BUILD_STATIC'
+	libdefine = 'WB_STATIC_LINK'
+	wabibuild = 'WB_BUILD_LIB'
 	switch = 'on'
 	copycomand = ''
 elseif(libtype == 'dynamic') then 
-	libdefine = 'WB_BUILD_DLL'
+	libdefine = 'WB_DYNAMIC_LINK'
+	wabibuild = 'WB_BUILD_DLL'
 	switch = 'off'
 	copycomand = '{COPY} %{cfg.buildtarget.relpath} ../bin/' .. outputdir .. '/Sandbox'
 end
@@ -56,6 +58,7 @@ project 'Wabisabi'
 		defines
 		{
 			libdefine,
+			wabibuild,
 			"GLFW_INCLUDE_NONE",
 		}
 		postbuildcommands
@@ -96,7 +99,10 @@ location 'Sandbox'
 	filter 'system:windows'
 
 		systemversion 'latest'
-
+		defines
+		{
+			libdefine,
+		}
 		filter 'configurations:Debug'
 			defines 'APP_DEBUG'
 			symbols 'On'
