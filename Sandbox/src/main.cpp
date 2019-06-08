@@ -1,5 +1,19 @@
-
 #include "Wabisabi.h"
+
+class UserLayer : public Wabi::Layer
+{
+public:
+	UserLayer()
+		:Wabi::Layer("Examle")
+	{
+
+	}
+	virtual void OnEvent(Wabi::Event& e) override
+	{
+		WB_TRACE("Layer Event: {0}", e.ToString());
+	}
+};
+
 
 class Sandbox : public Wabi::Application
 {
@@ -7,6 +21,8 @@ public:
 	Sandbox()
 	{
 		//m_Window = std::shared_ptr<Wabi::Window>(Wabi::Window::Create());
+		//Wabi::Layer* test = new UserLayer();
+		m_LayerStack.PushLayer(new UserLayer());
 	}
 	~Sandbox()
 	{

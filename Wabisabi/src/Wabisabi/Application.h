@@ -5,6 +5,7 @@
 #include "Events/WindowEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+#include "LayerStack.h"
 namespace Wabi {
 
 	class WABI_API Application
@@ -25,6 +26,7 @@ namespace Wabi {
 		std::shared_ptr<Window> m_Window;
 		//Window* m_Window;
 		bool m_Running;
+		LayerStack m_LayerStack;
 	private:
 		static Application* s_Instance;
 	};

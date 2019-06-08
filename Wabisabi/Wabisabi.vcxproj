@@ -105,6 +105,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\Opengl\OpenglVertexBuffer.h" />
     <ClInclude Include="src\Platform\Windows\InputWindows.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Wabisabi.h" />
@@ -117,20 +118,24 @@
     <ClInclude Include="src\Wabisabi\Events\WindowEvent.h" />
     <ClInclude Include="src\Wabisabi\Input.h" />
     <ClInclude Include="src\Wabisabi\KeyCodes.h" />
+    <ClInclude Include="src\Wabisabi\Layer.h" />
+    <ClInclude Include="src\Wabisabi\LayerStack.h" />
     <ClInclude Include="src\Wabisabi\Log.h" />
     <ClInclude Include="src\Wabisabi\MouseCodes.h" />
-    <ClInclude Include="src\Wabisabi\OpenglVertexBuffer.h" />
-    <ClInclude Include="src\Wabisabi\VertexBuffer.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Renderer.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\VertexBuffer.h" />
     <ClInclude Include="src\Wabisabi\Window.h" />
     <ClInclude Include="src\wbpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\Opengl\OpenglVertexBuffer.cpp" />
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Wabisabi\Application.cpp" />
+    <ClCompile Include="src\Wabisabi\LayerStack.cpp" />
     <ClCompile Include="src\Wabisabi\Log.cpp" />
-    <ClCompile Include="src\Wabisabi\OpenglVertexBuffer.cpp" />
-    <ClCompile Include="src\Wabisabi\VertexBuffer.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\VertexBuffer.cpp" />
     <ClCompile Include="src\wbpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

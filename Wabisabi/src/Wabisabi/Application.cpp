@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "KeyCodes.h"
 #include <glad/glad.h>
+
 namespace Wabi {
 
 	Application* Application::s_Instance = nullptr;
@@ -22,6 +23,13 @@ namespace Wabi {
 		m_Window = std::shared_ptr<Wabi::Window>(Wabi::Window::Create());
 		m_Running = true;
 		m_Window->SetCallback(BIND_FN(OnEvent));
+		float vertex[6] = {
+			.5f,.5f,
+			.0f,.0f,
+			.5f,.0f,
+		};
+		//VertexBuffer vb(vertex, 6 * sizeof(float));
+		
 	}
 	Application::~Application()
 	{
@@ -29,11 +37,15 @@ namespace Wabi {
 	}
 	void Application::Run()
 	{
-		Init();
 		while (m_Running)
 		{	
-			Update();
-			//m_Window->OnUpdate();	
+			glClearColor(1.f,1.f,.0f,1.f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			for (auto el : m_LayerStack)
+			{
+				el->OnUpdate();
+			}
+			m_Window->OnUpdate();	
 		}
 		
 	}
@@ -54,6 +66,12 @@ namespace Wabi {
 		EventDispatcher disp(e);
 		disp.Dispatch<WindowClose>(BIND_FN(OnWindowClose));
 		disp.Dispatch<WindowResize>(BIND_FN(OnWindowResize));
+		for (auto it = m_LayerStack.rbegin(); it !=m_LayerStack.rend() ; it++)
+		{
+			(*it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
 	}
 	bool Application::OnWindowClose(WindowClose& e)
 	{

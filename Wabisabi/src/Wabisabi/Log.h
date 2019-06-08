@@ -26,7 +26,7 @@ namespace Wabisabi
 #define WB_CORE_ERROR(...)    ::Wabisabi::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define WB_CORE_FATAL(...)    ::Wabisabi::Log::GetCoreLogger()->fatal(__VA_ARGS__)
 
-#define WB_TRACE(...)       :Wabisabi::Log::GetAppLogger()->trace(__VA_ARGS__)
+#define WB_TRACE(...)		  ::Wabisabi::Log::GetAppLogger()->trace(__VA_ARGS__)
 #define WB_INFO(...)          ::Wabisabi::Log::GetAppLogger()->info(__VA_ARGS__)
 #define WB_WARN(...)          ::Wabisabi::Log::GetAppLogger()->warn(__VA_ARGS__)
 #define WB_ERROR(...)         ::Wabisabi::Log::GetAppLogger()->error(__VA_ARGS__)

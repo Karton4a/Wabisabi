@@ -30,8 +30,7 @@ namespace Wabisabi
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glClearColor(1, 0, 0, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		
 		glfwSwapBuffers(m_Window);
 	}
 	void WindowsWindow::SetVSync(bool enabled) 
