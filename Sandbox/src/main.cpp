@@ -21,7 +21,6 @@ public:
 	Sandbox()
 	{
 		//m_Window = std::shared_ptr<Wabi::Window>(Wabi::Window::Create());
-		//Wabi::Layer* test = new UserLayer();
 		m_LayerStack.PushLayer(new UserLayer());
 	}
 	~Sandbox()

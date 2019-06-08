@@ -10,6 +10,7 @@ outputdir = '%{cfg.buildcfg}-%{cfg.architecture}'
 
 include 'Wabisabi/vendor/GLFW'
 include 'Wabisabi/vendor/Glad'
+include 'Wabisabi/vendor/imgui'
 
 libtype = 'static'
 if(libtype == 'static') then
@@ -44,12 +45,15 @@ project 'Wabisabi'
 	 '%{prj.name}/src',
 	 '%{prj.name}/vendor/spdlog/include',
 	 '%{prj.name}/vendor/Glad/include',
+	 '%{prj.name}/vendor/imgui',
+
 	}
 	links
 	{
 		'Glad',
 		'GLFW',
-		'opengl32.lib'
+		'opengl32.lib',
+		'ImGui',
 	}
 	filter 'system:windows'
 		cppdialect 'C++17'
