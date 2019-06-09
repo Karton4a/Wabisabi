@@ -1,7 +1,7 @@
 #pragma once
 #include"wbpch.h"
 #include "Wabisabi/Window.h"
-
+#include "Wabisabi/Renderer/GraphicsContext.h"
 #include <GLFW/glfw3.h>
 
 namespace Wabisabi
@@ -36,6 +36,8 @@ namespace Wabisabi
 		};
 
 		WindowData m_Data;
+		std::shared_ptr<GraphicContext> m_GraphicContext;
+
 	public:
 		static unsigned int s_objCount; //TODO сделать что то поумнее
 	

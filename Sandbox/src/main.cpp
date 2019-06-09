@@ -10,7 +10,7 @@ public:
 	}
 	virtual void OnEvent(Wabi::Event& e) override
 	{
-		WB_TRACE("Layer Event: {0}", e.ToString());
+		
 	}
 };
 
@@ -21,7 +21,9 @@ public:
 	Sandbox()
 	{
 		//m_Window = std::shared_ptr<Wabi::Window>(Wabi::Window::Create());
-		m_LayerStack.PushLayer(new UserLayer());
+		Wabi::Layer* overlay = new UserLayer();
+		m_LayerStack.PushOverlay(overlay);
+		
 	}
 	~Sandbox()
 	{

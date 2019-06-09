@@ -72,7 +72,8 @@
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,11 +100,14 @@
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command></Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\Opengl\OpenglVertexBuffer.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglBuffer.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglGLFWContext.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglShader.h" />
     <ClInclude Include="src\Platform\Windows\InputWindows.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Wabisabi.h" />
@@ -120,20 +124,23 @@
     <ClInclude Include="src\Wabisabi\LayerStack.h" />
     <ClInclude Include="src\Wabisabi\Log.h" />
     <ClInclude Include="src\Wabisabi\MouseCodes.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\VertexBuffer.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Buffer.h" />
     <ClInclude Include="src\Wabisabi\Window.h" />
     <ClInclude Include="src\wbpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\Opengl\OpenglVertexBuffer.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglGLFWContext.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp" />
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Wabisabi\Application.cpp" />
     <ClCompile Include="src\Wabisabi\LayerStack.cpp" />
     <ClCompile Include="src\Wabisabi\Log.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Wabisabi\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp" />
     <ClCompile Include="src\wbpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
