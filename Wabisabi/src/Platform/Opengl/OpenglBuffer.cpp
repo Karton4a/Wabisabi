@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 namespace Wabisabi
 {
+	
 	OpenglVertexBuffer::OpenglVertexBuffer(const void* data, uint32_t size) 
 		: m_RendererId(0)
 	{

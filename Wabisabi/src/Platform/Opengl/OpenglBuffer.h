@@ -12,7 +12,10 @@ namespace Wabisabi
 		virtual void Bind() const override final;
 		virtual void UnBind() const override final;
 		virtual void Reset(const void* data, uint32_t size) const override final;
+		virtual void SetLayout(const BufferLayout& layout) override { m_Layout= layout; };
+		virtual const BufferLayout& GetLayout() const override { return m_Layout; };
 	private:
+		BufferLayout m_Layout;
 		uint32_t m_RendererId;
 	};
 

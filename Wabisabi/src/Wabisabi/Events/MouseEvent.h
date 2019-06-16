@@ -47,10 +47,10 @@ namespace Wabisabi
 	class WABI_API MouseMoved : public Event
 	{
 	public:
-		MouseMoved(float posx,float posy)
+		MouseMoved(double posx, double posy)
 			:m_PosX(posx),m_PosY(posy) {}
 
-		inline std::pair<float, float> GetPosition() { return {m_PosX,m_PosY}; }
+		inline std::pair<double, double> GetPosition() { return {m_PosX,m_PosY}; }
 
 		virtual std::string ToString() const override final
 		{
@@ -61,16 +61,16 @@ namespace Wabisabi
 		SET_TYPE(MouseMoved)
 		SET_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
-		float m_PosX,m_PosY;
+		double m_PosX,m_PosY;
 	};
 
 	class WABI_API MouseScrolled : public Event
 	{
 	public:
-		MouseScrolled(float xoffset, float yoffset)
+		MouseScrolled(double xoffset, double yoffset)
 			:m_OffsetX(xoffset), m_OffsetY(yoffset) {}
 
-		inline std::pair<float, float> GetPosition() { return { m_OffsetX,m_OffsetY }; }
+		inline std::pair<double, double> GetPosition() { return { m_OffsetX,m_OffsetY }; }
 
 		virtual std::string ToString() const override final
 		{
@@ -81,6 +81,6 @@ namespace Wabisabi
 		SET_TYPE(MouseScrolled)
 		SET_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	private:
-		float m_OffsetX, m_OffsetY;
+		double m_OffsetX, m_OffsetY;
 	};
 }

@@ -108,6 +108,7 @@
     <ClInclude Include="src\Platform\Opengl\OpenglBuffer.h" />
     <ClInclude Include="src\Platform\Opengl\OpenglGLFWContext.h" />
     <ClInclude Include="src\Platform\Opengl\OpenglShader.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\InputWindows.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Wabisabi.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Buffer.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h" />
     <ClInclude Include="src\Wabisabi\Window.h" />
     <ClInclude Include="src\wbpch.h" />
   </ItemGroup>
@@ -134,6 +136,7 @@
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp" />
     <ClCompile Include="src\Platform\Opengl\OpenglGLFWContext.cpp" />
     <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Wabisabi\Application.cpp" />
@@ -141,6 +144,7 @@
     <ClCompile Include="src\Wabisabi\Log.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\wbpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

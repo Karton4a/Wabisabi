@@ -83,6 +83,8 @@
     <ClInclude Include="src\Platform\Opengl\OpenglShader.h" />
     <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Platform\Opengl\OpenglGLFWContext.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp">
@@ -110,5 +112,7 @@
     </ClCompile>
     <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp" />
     <ClCompile Include="src\Platform\Opengl\OpenglGLFWContext.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglVertexArray.cpp" />
   </ItemGroup>
 </Project>
