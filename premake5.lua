@@ -38,6 +38,8 @@ project 'Wabisabi'
 	{
 		'%{prj.name}/src/**.h',
 		'%{prj.name}/src/**.cpp',
+		'%{prj.name}/vendor/stb/stb/stb_image.cpp', -- добавл€ю stb в проект
+		'%{prj.name}/vendor/stb/stb/stb_image.h',
 	}
 	includedirs
 	{
@@ -46,7 +48,7 @@ project 'Wabisabi'
 	 '%{prj.name}/vendor/spdlog/include',
 	 '%{prj.name}/vendor/Glad/include',
 	 '%{prj.name}/vendor/imgui',
-
+	 '%{prj.name}/vendor/stb',
 	}
 	links
 	{

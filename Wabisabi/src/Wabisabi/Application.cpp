@@ -6,6 +6,8 @@
 #include "KeyCodes.h"
 
 #include <glad/glad.h>
+#include <stb/stb_image.h>
+
 
 namespace Wabi {
 
@@ -28,38 +30,47 @@ namespace Wabi {
 		const GLchar* vertexShaderSource = "#version 330 core\n"
 			"layout (location = 0) in vec3 position;\n"
 			"layout (location = 1) in vec4 color;\n"
+			"layout (location = 2) in vec2 texCoord;\n"
 			"out vec4 u_Color;\n"
+			"out vec2 v_TexCoord;\n"
 			"void main()\n"
 			"{\n"
 			"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
 			"u_Color = color;\n"
+			"v_TexCoord = texCoord;\n"
 			"}\0";
 		const GLchar* fragmentShaderSource = "#version 330 core\n"
 			"out vec4 color;\n"
+			"uniform vec4 ourColor;"
+			"uniform sampler2D u_Texture;"
 			"in vec4 u_Color;\n"
+			"in vec2 v_TexCoord;\n"
 			"void main()\n"
 			"{\n"
-			"color = u_Color;\n"
+			"color = texture(u_Texture,v_TexCoord);\n"
 			"}\n\0";
+
 		m_Shader.reset(new OpenglShader(vertexShaderSource, fragmentShaderSource));
+		//m_Shader->Bind();
+		m_Shader->SetUniform4f("ourColor", 1.f, 1.f, .0f, 1.f);
+
 		GLfloat vertices[] = {
-			 0.5f,  0.5f, 0.0f,1.f,0.f,0.f,1.f,  // Top Right
-			 0.5f, -0.5f, 0.0f,1.f,1.f,0.f,1.f,  // Bottom Right
-			-0.5f, -0.5f, 0.0f,1.f,0.f,1.f,1.f,  // Bottom Left
-			-0.5f,  0.5f, 0.0f,1.f,1.f,1.f,1.f,   // Top Left 
+			 0.3f,  0.5f, 0.0f,1.f,0.f,0.f,1.f, 1.f,0.f, // Top Right
+			 0.3f, -0.5f, 0.0f,1.f,1.f,0.f,1.f, 1.f,1.0f,  // Bottom Right
+			-0.3f, -0.5f, 0.0f,1.f,0.f,1.f,1.f, 0.f,1.0f,  // Bottom Left
+			-0.3f,  0.5f, 0.0f,1.f,1.f,1.f,1.f, 0.f,0.f,  // Top Left 
 		};
 		GLuint indices[] = {  // Note that we start from 0!
 			0, 1, 3,  // First Triangle
 			1, 2, 3   // Second Triangle
 		};
-		//m_VertexBuff.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		
 		BufferLayout layout = {
 
 			{ShaderDataType::Float3,"position"},
 			{ShaderDataType::Float4,"color"},
+			{ShaderDataType::Float2,"texture"},
 		};
-		//m_VertexBuff->SetLayout(layout);
-		//m_IndexBuff.reset(IndexBuffer::Create(indices, 6));
 
 		m_VAO.reset(VertexArray::Create());
 		m_VAO->AddVertexBuffer(vertices, sizeof(vertices),layout);
@@ -72,35 +83,42 @@ namespace Wabi {
 	void Application::Run()
 	{
 		
-		
-
-		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		//glEnableVertexAttribArray(0);
-		
-		//glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
-
-		 // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
-
+		int width = 0, height = 0, bpp = 0;
+		char* data = (char*)stbi_load("C:/Users/anpas/source/repos/Wabisabi/texture/logo.png", &width, &height, &bpp, 4);
+		unsigned int textureid = 0;
+		glCreateTextures(GL_TEXTURE_2D, 1, &textureid);
+		glBindTexture(GL_TEXTURE_2D, textureid);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		if (data)
+			stbi_image_free(data);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureid);
+		m_Shader->SetUniform1i("u_Texture", 0);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		while (m_Running)
 		{	
-			glClearColor(0.f,0.f,0.f,1.f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			glClearColor(1.f,1.f,1.f,1.f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			// Draw our first triangle
+
 			m_Shader->Bind();
 			m_VAO->Bind();
-			//glBindVertexArray(VAO);
-			//glDrawArrays(GL_TRIANGLES, 0, 6);
+			
 			glDrawElements(GL_TRIANGLES, m_VAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
-			//glBindVertexArray(0);
+			
+
 			for (auto el : m_LayerStack)
 			{
 				el->OnUpdate();
 			}
 			m_Window->OnUpdate();	
 		}
+		glDeleteTextures(1, &textureid);
 	}
 	void Application::Init()
 	{

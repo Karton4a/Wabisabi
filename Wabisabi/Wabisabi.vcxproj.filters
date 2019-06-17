@@ -1,118 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Opengl">
-      <UniqueIdentifier>{5E812C1D-CA0C-9AE1-D31D-1DD63F28F6E1}</UniqueIdentifier>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    <Filter Include="src\Platform\Opengl">
+      <UniqueIdentifier>{75A89437-E109-7245-6A77-B8F7D6D7A804}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Wabisabi">
-      <UniqueIdentifier>{67FB29DD-53C8-84E8-7CE1-7290680DBA76}</UniqueIdentifier>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Wabisabi\Events">
-      <UniqueIdentifier>{6BEDB3BA-D778-217F-E089-A4734C947D7F}</UniqueIdentifier>
+    <Filter Include="src\Wabisabi">
+      <UniqueIdentifier>{5EFEA30D-4A61-33B2-F3E6-6B68DF28FF34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Wabisabi\Renderer">
-      <UniqueIdentifier>{ED02602E-5919-5EC4-A290-E9E50EE62E4C}</UniqueIdentifier>
+    <Filter Include="src\Wabisabi\Events">
+      <UniqueIdentifier>{82141CD5-EE75-F9E2-77E3-3F95E34330A2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Wabisabi\Renderer">
+      <UniqueIdentifier>{C44B6E83-30B8-297E-F9AB-C1DB65D74BE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb">
+      <UniqueIdentifier>{8BD3C5A8-778B-07F6-E092-E051CC69A2E6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb\stb">
+      <UniqueIdentifier>{635F6677-4F2D-5A7D-38C1-CAA3242E36E2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\Opengl\OpenglBuffer.h">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Opengl\OpenglGLFWContext.h">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Opengl\OpenglShader.h">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Opengl\OpenglVertexArray.h">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\InputWindows.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\Wabisabi.h" />
+    <ClInclude Include="src\Wabisabi.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Wabisabi\Application.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Core.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\EntryPoint.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Events\Event.h">
-      <Filter>Wabisabi\Events</Filter>
+      <Filter>src\Wabisabi\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Events\KeyEvent.h">
-      <Filter>Wabisabi\Events</Filter>
+      <Filter>src\Wabisabi\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Events\MouseEvent.h">
-      <Filter>Wabisabi\Events</Filter>
+      <Filter>src\Wabisabi\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Events\WindowEvent.h">
-      <Filter>Wabisabi\Events</Filter>
+      <Filter>src\Wabisabi\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Input.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\KeyCodes.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Layer.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\LayerStack.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Log.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\MouseCodes.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\Buffer.h">
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h">
+      <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h">
-      <Filter>Wabisabi\Renderer</Filter>
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h">
+      <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Window.h">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
-    <ClInclude Include="src\wbpch.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\Buffer.h">
-      <Filter>Wabisabi\Renderer</Filter>
+    <ClInclude Include="src\wbpch.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Opengl\OpenglBuffer.h">
-      <Filter>Platform\Opengl</Filter>
+    <ClInclude Include="vendor\stb\stb\stb_image.h">
+      <Filter>vendor\stb\stb</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\Opengl\OpenglShader.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Platform\Opengl\OpenglGLFWContext.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\Opengl\OpenglVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Opengl\OpenglGLFWContext.cpp">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Opengl\OpenglVertexArray.cpp">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\InputWindows.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Application.cpp">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\LayerStack.cpp">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Log.cpp">
-      <Filter>Wabisabi</Filter>
+      <Filter>src\Wabisabi</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp">
+      <Filter>src\Wabisabi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp">
-      <Filter>Wabisabi\Renderer</Filter>
+      <Filter>src\Wabisabi\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\wbpch.cpp" />
-    <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
-      <Filter>Platform\Opengl</Filter>
+    <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp">
+      <Filter>src\Wabisabi\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp" />
-    <ClCompile Include="src\Platform\Opengl\OpenglGLFWContext.cpp" />
-    <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\Opengl\OpenglVertexArray.cpp" />
+    <ClCompile Include="src\wbpch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\stb\stb\stb_image.cpp">
+      <Filter>vendor\stb\stb</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>wbpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WB_STATIC_LINK;WB_BUILD_LIB;GLFW_INCLUDE_NONE;WB_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\GLFW\include;src;vendor\spdlog\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\GLFW\include;src;vendor\spdlog\include;vendor\Glad\include;vendor\imgui;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -72,8 +72,7 @@
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command></Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +81,7 @@
       <PrecompiledHeaderFile>wbpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WB_STATIC_LINK;WB_BUILD_LIB;GLFW_INCLUDE_NONE;WB_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\GLFW\include;src;vendor\spdlog\include;vendor\Glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\GLFW\include;src;vendor\spdlog\include;vendor\Glad\include;vendor\imgui;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -100,8 +99,7 @@
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command></Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -125,12 +123,13 @@
     <ClInclude Include="src\Wabisabi\LayerStack.h" />
     <ClInclude Include="src\Wabisabi\Log.h" />
     <ClInclude Include="src\Wabisabi\MouseCodes.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Buffer.h" />
     <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\Buffer.h" />
     <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h" />
     <ClInclude Include="src\Wabisabi\Window.h" />
     <ClInclude Include="src\wbpch.h" />
+    <ClInclude Include="vendor\stb\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp" />
@@ -142,12 +141,13 @@
     <ClCompile Include="src\Wabisabi\Application.cpp" />
     <ClCompile Include="src\Wabisabi\LayerStack.cpp" />
     <ClCompile Include="src\Wabisabi\Log.cpp" />
-    <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\wbpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="vendor\stb\stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\Glad\Glad.vcxproj">

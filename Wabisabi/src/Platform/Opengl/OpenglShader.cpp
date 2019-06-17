@@ -123,4 +123,24 @@ namespace Wabisabi
 	{
 		glUseProgram(0);
 	}
+	int32_t OpenglShader::GetLocation(const std::string& name) const
+	{
+		int32_t location = glGetUniformLocation(m_RendererId, name.c_str());
+		if (location == -1)
+			WB_CORE_WARN("Uniform {0} doesn't exist or not used", name);
+		return location;
+	}
+	void OpenglShader::SetUniform1i(const std::string& name, int32_t num)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform1i(loc, num);
+	}
+	void OpenglShader::SetUniform4f(const std::string& name, float_t num1, float_t num2, float_t num3, float_t num4)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform4f(loc, num1,num2, num3, num4);
+
+	}
 }
