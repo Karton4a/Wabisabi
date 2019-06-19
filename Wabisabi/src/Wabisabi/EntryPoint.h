@@ -10,12 +10,10 @@
 //extern Wabi::Application* CreateApplication();
 extern void DeleteApplication(Wabi::Application* app);
 
-
 int main()
 {
-	
 	Wabi::Log::Init();
-	WB_CORE_WARN("Logger Init");
+	WB_CORE_INFO("Logger Init");
 	auto app = Wabi::CreateApplication();
 	
 	Wabi::Application::Get().Run();

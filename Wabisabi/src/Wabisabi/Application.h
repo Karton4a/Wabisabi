@@ -9,6 +9,7 @@
 #include "Renderer/Buffer.h"
 #include "Platform/Opengl/OpenglShader.h" // TODO remove platform code
 #include "Renderer/VertexArray.h"
+#include "Renderer/Texture.h"
 namespace Wabi {
 
 	class WABI_API Application

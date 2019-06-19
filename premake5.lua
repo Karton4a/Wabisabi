@@ -49,6 +49,7 @@ project 'Wabisabi'
 	 '%{prj.name}/vendor/Glad/include',
 	 '%{prj.name}/vendor/imgui',
 	 '%{prj.name}/vendor/stb',
+	 '%{prj.name}/vendor/glm/',
 	}
 	links
 	{
@@ -97,6 +98,7 @@ location 'Sandbox'
 	{
 		'Wabisabi/src',
 		'Wabisabi/vendor/spdlog/include',
+		'Wabisabi/vendor/glm/',
 	}
 	links
 	{

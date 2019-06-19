@@ -6,7 +6,10 @@
 #include "KeyCodes.h"
 
 #include <glad/glad.h>
-#include <stb/stb_image.h>
+
+#include <stdio.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 namespace Wabi {
@@ -31,11 +34,14 @@ namespace Wabi {
 			"layout (location = 0) in vec3 position;\n"
 			"layout (location = 1) in vec4 color;\n"
 			"layout (location = 2) in vec2 texCoord;\n"
+			"uniform mat4 u_Proj;"
+			"uniform mat4 u_View;"
+			"uniform mat4 u_Model;"
 			"out vec4 u_Color;\n"
 			"out vec2 v_TexCoord;\n"
 			"void main()\n"
 			"{\n"
-			"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+			"gl_Position =  u_Proj*u_Model*u_View*vec4(position.x, position.y, position.z, 1.0);\n"
 			"u_Color = color;\n"
 			"v_TexCoord = texCoord;\n"
 			"}\0";
@@ -47,18 +53,23 @@ namespace Wabi {
 			"in vec2 v_TexCoord;\n"
 			"void main()\n"
 			"{\n"
-			"color = texture(u_Texture,v_TexCoord);\n"
+			"vec4 text = texture(u_Texture,v_TexCoord);\n "
+			"color = text;\n"
 			"}\n\0";
 
 		m_Shader.reset(new OpenglShader(vertexShaderSource, fragmentShaderSource));
 		//m_Shader->Bind();
 		m_Shader->SetUniform4f("ourColor", 1.f, 1.f, .0f, 1.f);
-
+		float width = m_Window->GetWidth() / 2.f;
+		float height = m_Window->GetHeight() / 2.f;
+		glm::mat4 proj = glm::ortho(-width, width, -height, height,-1.f,1.f);
+		m_Shader->SetUniformMat4("u_Proj", proj);
 		GLfloat vertices[] = {
-			 0.3f,  0.5f, 0.0f,1.f,0.f,0.f,1.f, 1.f,0.f, // Top Right
-			 0.3f, -0.5f, 0.0f,1.f,1.f,0.f,1.f, 1.f,1.0f,  // Bottom Right
-			-0.3f, -0.5f, 0.0f,1.f,0.f,1.f,1.f, 0.f,1.0f,  // Bottom Left
-			-0.3f,  0.5f, 0.0f,1.f,1.f,1.f,1.f, 0.f,0.f,  // Top Left 
+			//coord				 //color		   //textcoord
+			 128.f,  128.f, 0.0f,  1.f,0.f,0.f,1.f,  1.f,0.f,    // Top Right
+			 128.f, -128.f, 0.0f,  1.f,1.f,0.f,1.f,  1.f,1.0f,   // Bottom Right
+			-128.f, -128.f, 0.0f,  1.f,0.f,1.f,1.f,  0.f,1.0f,   // Bottom Left
+			-128.f,  128.f, 0.0f,  1.f,1.f,1.f,1.f,  0.f,0.f,    // Top Left 
 		};
 		GLuint indices[] = {  // Note that we start from 0!
 			0, 1, 3,  // First Triangle
@@ -83,8 +94,9 @@ namespace Wabi {
 	void Application::Run()
 	{
 		
-		int width = 0, height = 0, bpp = 0;
+		/*int width = 0, height = 0, bpp = 0;
 		char* data = (char*)stbi_load("C:/Users/anpas/source/repos/Wabisabi/texture/logo.png", &width, &height, &bpp, 4);
+
 		unsigned int textureid = 0;
 		glCreateTextures(GL_TEXTURE_2D, 1, &textureid);
 		glBindTexture(GL_TEXTURE_2D, textureid);
@@ -96,21 +108,30 @@ namespace Wabi {
 			stbi_image_free(data);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureid);
+		glBindTexture(GL_TEXTURE_2D, textureid);*/
+		Texture* tx = Texture::Create("C:/Users/anpas/source/repos/Wabisabi/texture/logo.png");
+		tx->Bind();
 		m_Shader->SetUniform1i("u_Texture", 0);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glm::mat4 view(1.f);
+		glm::mat4 trans(1.f);
+		trans = glm::translate(trans,glm::vec3(200.f,200.f,0.0f));
+		m_Shader->SetUniformMat4("u_Model", trans);
 		while (m_Running)
 		{	
 			glClearColor(1.f,1.f,1.f,1.f);
 			glClear(GL_COLOR_BUFFER_BIT);
-
+			view = glm::rotate(view, 0.02f, glm::vec3(0.0f, 0.0f, 1.0f));
+			m_Shader->SetUniformMat4("u_View", view);
+			m_Shader->SetUniformMat4("u_Model", trans);
 
 			m_Shader->Bind();
 			m_VAO->Bind();
 			
 			glDrawElements(GL_TRIANGLES, m_VAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
-			
+			m_Shader->SetUniformMat4("u_Model", glm::mat4(1.f));
+			glDrawElements(GL_TRIANGLES, m_VAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 
 			for (auto el : m_LayerStack)
 			{
@@ -118,7 +139,8 @@ namespace Wabi {
 			}
 			m_Window->OnUpdate();	
 		}
-		glDeleteTextures(1, &textureid);
+		delete tx;
+		//glDeleteTextures(1, &textureid);
 	}
 	void Application::Init()
 	{

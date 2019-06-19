@@ -114,6 +114,8 @@
     <ClInclude Include="vendor\stb\stb\stb_image.h">
       <Filter>vendor\stb\stb</Filter>
     </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\Texture.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
@@ -158,5 +160,7 @@
     <ClCompile Include="vendor\stb\stb\stb_image.cpp">
       <Filter>vendor\stb\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\Wabisabi\Renderer\Texture.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglTexture.cpp" />
   </ItemGroup>
 </Project>
