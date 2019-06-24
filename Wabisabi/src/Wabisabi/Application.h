@@ -10,6 +10,7 @@
 #include "Platform/Opengl/OpenglShader.h" // TODO remove platform code
 #include "Renderer/VertexArray.h"
 #include "Renderer/Texture.h"
+#include "Renderer/Camera.h"
 namespace Wabi {
 
 	class WABI_API Application
@@ -26,12 +27,14 @@ namespace Wabi {
 		inline const Window& GetWindow() const { return *m_Window;};
 		virtual bool OnWindowClose(WindowClose& e);
 		virtual bool OnWindowResize(WindowResize& e);
+		virtual bool OnKeyPressedEvent(KeyPressed& e);
 	protected:
 		std::shared_ptr<Window> m_Window;
 		//Window* m_Window;
 		bool m_Running;
 		LayerStack m_LayerStack;
 		std::shared_ptr<VertexArray> m_VAO;
+		Camera m_Camera;
 		std::shared_ptr<OpenglShader> m_Shader; // TODO remove platform code
 	private:
 		static Application* s_Instance;

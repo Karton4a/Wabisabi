@@ -15,6 +15,8 @@ namespace Wabisabi
 		virtual std::pair<float, float> MousePositionImpl() override final;
 		virtual float MousePositionXImpl() override final;
 		virtual float MousePositionYImpl() override final;
+		virtual void SetMousePositionImpl(float x, float y) override final;
+		virtual void HideCursorImpl(bool var) override final;
 	};
 
 }

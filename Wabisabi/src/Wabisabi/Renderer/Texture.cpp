@@ -8,7 +8,7 @@ namespace Wabisabi
 {
 	void Texture::LoadTexture(const std::string& path)
 	{
-		m_Data = (char*)stbi_load(path.c_str(), (int*)&m_Width, (int*)&m_Height, (int*)&m_BPP, 4);
+		m_Data = (uint8_t*)stbi_load(path.c_str(), (int*)&m_Width, (int*)&m_Height, (int*)&m_BPP, 4);
 	}
 	void Texture::DeleteData()
 	{
@@ -18,11 +18,10 @@ namespace Wabisabi
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:
-				WB_CORE_ASSERT(false, "None API doesn't supported") return nullptr;
-			case RendererAPI::OpenGL: return new OpenglTexture(path);
+			case RendererAPI::None:    WB_CORE_ASSERT(false, "None API doesn't supported") return nullptr;
+			case RendererAPI::OpenGL:  return new OpenglTexture(path);
 		}
 		WB_CORE_ASSERT(false, "None API is passed")
-			return nullptr;
+		return nullptr;
 	}
 }

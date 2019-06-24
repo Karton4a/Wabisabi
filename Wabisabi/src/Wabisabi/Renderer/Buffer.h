@@ -60,7 +60,7 @@ namespace Wabisabi
 		ShaderDataType Type;
 		bool Normalized;
 		LayoutElement()
-		{}
+			:Type(ShaderDataType::None), Name(""), Size(0), Count(0), Offset(0), Normalized(false) {}
 		LayoutElement(ShaderDataType type,const std::string& name,bool normalized = false)
 			:Type(type),Name(name),Size(GetTypeSize(type)),Count(GetTypeCount(type)),Offset(0),Normalized(normalized) {}
 	};

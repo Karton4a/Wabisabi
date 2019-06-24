@@ -12,7 +12,7 @@ namespace Wabisabi
 		virtual void UnBind() const = 0;
 		static Texture* Create(const std::string& path);
 	protected:
-		char* m_Data;
+		uint8_t* m_Data;
 		uint32_t m_Width;
 		uint32_t m_Height;
 		uint8_t m_BPP;

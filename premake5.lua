@@ -93,6 +93,10 @@ location 'Sandbox'
 	{
 		'%{prj.name}/src/**.h',
 		'%{prj.name}/src/**.cpp'
+		'%{prj.name}/shaders/**.vert'
+		'%{prj.name}/shaders/**.frag'
+		'%{prj.name}/shaders/**.glsl'
+		'%{prj.name}/shaders/**.geom'
 	}
 	includedirs
 	{

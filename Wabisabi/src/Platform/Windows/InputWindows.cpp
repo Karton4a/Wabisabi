@@ -35,5 +35,15 @@ namespace Wabisabi
 		auto [x, y] = MousePositionImpl();
 		return y;
 	}
+	void WindowsInput::SetMousePositionImpl(float x, float y)
+	{
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		glfwSetCursorPos(window, x, y);
+	}
+	void WindowsInput::HideCursorImpl(bool var)
+	{
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		glfwSetInputMode(window, GLFW_CURSOR, (var)?GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
+	}
 }
 

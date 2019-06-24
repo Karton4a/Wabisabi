@@ -143,11 +143,11 @@ namespace Wabisabi
 		glUniform4f(loc, num1,num2, num3, num4);
 
 	}
-	void OpenglShader::SetUniformMat4(const std::string& name, glm::mat4& marix)
+	void OpenglShader::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
 	{
 		int32_t loc = GetLocation(name);
 		glUseProgram(m_RendererId);
 		
-		glUniformMatrix4fv(loc, 1, GL_FALSE, &marix[0][0]);
+		glUniformMatrix4fv(loc, 1, GL_FALSE,&matrix[0][0]);
 	}
 }
