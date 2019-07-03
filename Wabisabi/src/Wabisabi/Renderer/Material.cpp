@@ -2,33 +2,54 @@
 #include "Material.h"
 namespace Wabisabi
 {
-	Material::Material(Texture* diffuse, Texture* specular, int32_t shiness)
+	Material::Material(Texture* diffuse, Texture* specular, int32_t shiness, Texture* normal)
 	{
-		m_Uniforms["material.diffuse"] = 0;
-		m_Uniforms["material.specular"] = 1;
-		m_Uniforms["material.shiness"] = shiness;
-		m_Textures[0].reset(diffuse);
-		m_Textures[1].reset(specular);
+		if (normal == nullptr)
+		{
+			m_Type = TextureMapping;
+		}
+		else
+		{
+			m_Type = TextureMapping | NormalMapping;
+			m_Normals.reset(normal);
+		}
+		m_Diffuse.reset(diffuse);
+		m_Specular.reset(specular);
+		m_Shiness = shiness;
+	}
+	Material::Material(const Color& diffuse, const Color& specular, int32_t shiness, const Color& ambient)
+		:m_DiffuseColor(diffuse),m_SpecularColor(specular),m_Shiness(shiness)
+	{
+		if (ambient != Color(-1.f))
+			m_AmbientColor = ambient;
+		else
+			m_AmbientColor = diffuse;
 	}
 	void Material::Bind(OpenglShader& shader) const
 	{
-		int i = 0;
-		for (auto& el : m_Uniforms)
+		if (this->HasParam(TextureMapping))
 		{
-			if (i < m_Textures.size())
+			m_Diffuse->Bind(0);
+			shader.SetUniform("material.diffuse", 0);
+
+			m_Specular->Bind(1);
+			shader.SetUniform("material.specular", 1);
+
+			shader.SetUniform("material.shiness", m_Shiness);
+
+			if (this->HasParam(NormalMapping))
 			{
-				m_Textures[i]->Bind(el.second);
+				m_Normals->Bind(2);
+				shader.SetUniform("material.normal", 2);
 			}
-			shader.SetUniform(el.first,el.second);
-			i++;
+		}
+		else if (this->HasParam(ColorBased))
+		{
+			shader.SetUniform("material.ambient", m_AmbientColor.r, m_AmbientColor.g, m_AmbientColor.b);
+			shader.SetUniform("material.diffuse", m_DiffuseColor.r, m_DiffuseColor.g, m_DiffuseColor.b);
+			shader.SetUniform("material.specular", m_SpecularColor.r, m_SpecularColor.g, m_SpecularColor.b);
+			shader.SetUniform("material.shiness", m_Shiness);
 		}
 	}
-	void Material::SetDiffuseTexture(Texture* diffuse)
-	{
-		m_Textures[0].reset(diffuse);
-	}
-	void Material::SetSpecularTexture(Texture* specular)
-	{
-		m_Textures[1].reset(specular);
-	}
+
 }

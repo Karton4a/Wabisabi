@@ -21,8 +21,9 @@ namespace Wabisabi
 	}
 	void OpenglTexture::Bind(uint8_t slot) const
 	{
-		glActiveTexture(GL_TEXTURE0 + slot);
-		glBindTexture(GL_TEXTURE_2D, m_RendererId);
+		glBindTextureUnit(slot, m_RendererId);
+		/*glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, m_RendererId);*/
 	}
 
 	void OpenglTexture::UnBind() const

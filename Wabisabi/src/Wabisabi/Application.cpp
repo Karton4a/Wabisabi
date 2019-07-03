@@ -113,6 +113,7 @@ namespace Wabi {
 	}
 	void Application::Run()
 	{
+		
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -124,7 +125,7 @@ namespace Wabi {
 		
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight(), 0.1f, 100.0f);
 
-		glm::vec3 lightPosition(-3.f, 1.0f, 7.f);
+		glm::vec3 lightPosition(0.f, 5.0f, -3.f);
 		glm::vec4 lightColor(1.f, 1.f, 1.f, 1.f);
 		lightShader.SetUniform("u_Proj", proj);
 		lightShader.SetUniform("ourColor",lightColor.r,lightColor.g,lightColor.b,lightColor.a);

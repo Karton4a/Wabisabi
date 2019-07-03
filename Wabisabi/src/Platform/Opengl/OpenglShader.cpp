@@ -137,6 +137,24 @@ namespace Wabisabi
 		glUseProgram(m_RendererId);
 		glUniform1i(loc, num);
 	}
+	void OpenglShader::SetUniform(const std::string& name, float_t num)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform1f(loc, num);
+	}
+	void OpenglShader::SetUniform(const std::string& name, uint32_t num)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform1ui(loc, num);
+	}
+	void OpenglShader::SetUniform(const std::string& name, bool num)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform1i(loc, (int)num);
+	}
 	void OpenglShader::SetUniform(const std::string& name, float_t num1, float_t num2, float_t num3, float_t num4)
 	{
 		int32_t loc = GetLocation(name);

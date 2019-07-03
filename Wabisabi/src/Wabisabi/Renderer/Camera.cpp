@@ -19,10 +19,10 @@ namespace Wabisabi
 		switch (move)
 		{
 		case CameraMove::Forward:
-			m_Position += m_Speed * m_Front;
+			m_Position += m_Speed * glm::cross(m_Up,m_CameraRight);
 			break;
 		case CameraMove::Backward:
-			m_Position -= m_Speed * m_Front;
+			m_Position -= m_Speed * glm::cross(m_Up, m_CameraRight);
 			break;
 		case CameraMove::Left:
 			m_Position -= m_CameraRight * m_Speed;

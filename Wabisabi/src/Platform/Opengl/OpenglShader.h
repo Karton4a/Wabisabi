@@ -12,6 +12,9 @@ namespace Wabisabi
 		void UnBind() const;
 		int32_t GetLocation(const std::string& name) const;
 		void SetUniform(const std::string& name,int32_t num);
+		void SetUniform(const std::string& name, float_t num);
+		void SetUniform(const std::string& name, uint32_t num);
+		void SetUniform(const std::string& name, bool num);
 		void SetUniform(const std::string& name, float_t num1, float_t num2, float_t num3, float_t num4);
 		void SetUniform(const std::string& name, float_t num1, float_t num2, float_t num3);
 		void SetUniform(const std::string& name,const glm::mat4& marix);

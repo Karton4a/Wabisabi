@@ -1,3 +1,4 @@
+#include "..\..\Wabisabi\src\Wabisabi\Application.h"
 #include "Wabisabi.h"
 
 class UserLayer : public Wabi::Layer
@@ -49,6 +50,8 @@ Wabi::Application* Wabi::CreateApplication()
 {
 	return new Sandbox();
 }
+
+
 
 void DeleteApplication(Wabi::Application* app)
 {
