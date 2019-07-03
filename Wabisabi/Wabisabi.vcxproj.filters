@@ -42,6 +42,9 @@
     <ClInclude Include="src\Platform\Opengl\OpenglShader.h">
       <Filter>src\Platform\Opengl</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Opengl\OpenglTexture.h">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Opengl\OpenglVertexArray.h">
       <Filter>src\Platform\Opengl</Filter>
     </ClInclude>
@@ -96,14 +99,23 @@
     <ClInclude Include="src\Wabisabi\Renderer\Buffer.h">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\Camera.h">
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\Texture.h">
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h">
       <Filter>src\Wabisabi\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\ShaderLoader.h">
+      <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Window.h">
       <Filter>src\Wabisabi</Filter>
@@ -114,10 +126,7 @@
     <ClInclude Include="vendor\stb\stb\stb_image.h">
       <Filter>vendor\stb\stb</Filter>
     </ClInclude>
-    <ClInclude Include="src\Wabisabi\Renderer\Texture.h" />
-    <ClInclude Include="src\Platform\Opengl\OpenglTexture.h" />
-    <ClInclude Include="src\Wabisabi\Renderer\Camera.h" />
-    <ClInclude Include="src\Wabisabi\ShaderLoader.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
@@ -127,6 +136,9 @@
       <Filter>src\Platform\Opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Opengl\OpenglShader.cpp">
+      <Filter>src\Platform\Opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Opengl\OpenglTexture.cpp">
       <Filter>src\Platform\Opengl</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Opengl\OpenglVertexArray.cpp">
@@ -150,7 +162,13 @@
     <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Wabisabi\Renderer\Camera.cpp">
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp">
+      <Filter>src\Wabisabi\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Wabisabi\Renderer\Texture.cpp">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp">
@@ -162,8 +180,6 @@
     <ClCompile Include="vendor\stb\stb\stb_image.cpp">
       <Filter>vendor\stb\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\Wabisabi\Renderer\Texture.cpp" />
-    <ClCompile Include="src\Platform\Opengl\OpenglTexture.cpp" />
-    <ClCompile Include="src\Wabisabi\Renderer\Camera.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Material.cpp" />
   </ItemGroup>
 </Project>

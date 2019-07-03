@@ -4,7 +4,7 @@
 
 enum class CameraMove
 {
-	Forward,Backward,Left,Right,
+	Forward,Backward,Left,Right,Up,Down,
 };
 namespace Wabisabi
 {
@@ -17,10 +17,13 @@ namespace Wabisabi
 		void ProcessMovement(CameraMove move);
 		void ProcessRotation(float offsetX,float offsetY);
 		inline const glm::mat4& GetView() const { return m_LookAt; };
+		inline const glm::vec3& GetPositon() const { return m_Position; };
 	private:
 		glm::vec3 m_Position;
 		glm::vec3 m_Front;
 		glm::vec3 m_Up;
+		glm::vec3 m_CameraUp;
+		glm::vec3 m_CameraRight;
 		glm::mat4 m_LookAt;
 		float m_Speed;
 		float m_Sensitivity;

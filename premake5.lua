@@ -1,6 +1,7 @@
 workspace 'Wabisabi'
 
-architecture 'x86' 
+architecture 'x64'
+
 configurations
 {
 	'Debug',
@@ -92,11 +93,11 @@ location 'Sandbox'
 	files
 	{
 		'%{prj.name}/src/**.h',
-		'%{prj.name}/src/**.cpp'
-		'%{prj.name}/shaders/**.vert'
-		'%{prj.name}/shaders/**.frag'
-		'%{prj.name}/shaders/**.glsl'
-		'%{prj.name}/shaders/**.geom'
+		'%{prj.name}/src/**.cpp',
+		'%{prj.name}/shaders/**.vert',
+		'%{prj.name}/shaders/**.frag',
+		'%{prj.name}/shaders/**.glsl',
+		'%{prj.name}/shaders/**.geom',
 	}
 	includedirs
 	{
