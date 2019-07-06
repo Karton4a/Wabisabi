@@ -114,9 +114,6 @@
     <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h">
       <Filter>src\Wabisabi\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Wabisabi\ShaderLoader.h">
-      <Filter>src\Wabisabi</Filter>
-    </ClInclude>
     <ClInclude Include="src\Wabisabi\Window.h">
       <Filter>src\Wabisabi</Filter>
     </ClInclude>
@@ -127,6 +124,10 @@
       <Filter>vendor\stb\stb</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\Material.h" />
+    <ClInclude Include="src\Wabisabi\Loader.h">
+      <Filter>src\Wabisabi</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Wabisabi\Renderer\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
@@ -181,5 +182,6 @@
       <Filter>vendor\stb\stb</Filter>
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Renderer\Material.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Mesh.cpp" />
   </ItemGroup>
 </Project>

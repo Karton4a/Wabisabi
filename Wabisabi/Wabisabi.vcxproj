@@ -130,10 +130,11 @@
     <ClInclude Include="src\Wabisabi\Renderer\Camera.h" />
     <ClInclude Include="src\Wabisabi\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Material.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Mesh.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Renderer.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Texture.h" />
     <ClInclude Include="src\Wabisabi\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Wabisabi\ShaderLoader.h" />
+    <ClInclude Include="src\Wabisabi\Loader.h" />
     <ClInclude Include="src\Wabisabi\Window.h" />
     <ClInclude Include="src\wbpch.h" />
     <ClInclude Include="vendor\stb\stb\stb_image.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="src\Wabisabi\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Camera.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Material.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Texture.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\VertexArray.cpp" />

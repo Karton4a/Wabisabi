@@ -29,5 +29,6 @@
     <None Include="shaders\test.vert" />
     <None Include="shaders\test.prep" />
     <None Include="shaders\structs\material.prep" />
+    <None Include="shaders\simple.vert" />
   </ItemGroup>
 </Project>

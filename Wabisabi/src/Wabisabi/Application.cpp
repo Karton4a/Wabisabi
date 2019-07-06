@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "ShaderLoader.h"
+#include "Loader.h"
 #include "Renderer/Material.h"
+#include "Renderer/Mesh.h"
 
 namespace Wabi {
 
@@ -32,22 +33,12 @@ namespace Wabi {
 		m_Running = true;
 		m_Window->SetCallback(BIND_FN(OnEvent));
 
-
-		auto [vertextest, fragmentest] = ShaderLoader::LoadPair("shaders/shader.vert", "shaders/shader.frag");
+		auto [vertextest, fragmentest] = Loader::LoadShaderPair("shaders/shader.vert", "shaders/shader.frag");
 		m_Shader.reset(new OpenglShader(vertextest, fragmentest));
-
-		//ShaderLoader::FreePair(vertextest, fragmentest);
-		//m_Shader->Bind();
 
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight(), 0.1f, 100.0f);
 		m_Shader->SetUniform("u_Proj", proj);
-		//GLfloat vertices[] = {
-		//	//coord				 //textcoord
-		//	 0.5f,  0.5, -5.f,  1.f,0.f,    // Top Right
-		//	 0.5, -0.5, -5.f,   1.f,1.0f,   // Bottom Right
-		//	-0.5, -0.5, -5.f,   0.f,1.0f,   // Bottom Left
-		//	-0.5,  0.5, -5.f,   0.f,0.f,    // Top Left
-		//};
+		
 		float vertices[] = {
 			// positions          // normals           // texture coords
 			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
@@ -117,16 +108,26 @@ namespace Wabi {
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		Mesh mesh("models/nanosuit.obj");
+
 		Material mat(Texture::Create("texture/container.png"), Texture::Create("texture/container_specular.png"),32);
 		mat.Bind(*m_Shader);
 		
-		auto [vertexsrc, fragmentsrc] = ShaderLoader::LoadPair("shaders/lightSource.vert", "shaders/lightSource.frag");
-		OpenglShader lightShader(vertexsrc,fragmentsrc);
+		auto [vertexsrc1, fragmentsrc1] = Loader::LoadShaderPair("shaders/simple.vert", "shaders/lightSource.frag");
+		OpenglShader lightShader(vertexsrc1, fragmentsrc1);
+
+		auto [vertexsrc, fragmentsrc] = Loader::LoadShaderPair("shaders/lightSource.vert", "shaders/lightSource.frag");
+		OpenglShader teapotShader(vertexsrc,fragmentsrc);
 		
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight(), 0.1f, 100.0f);
 
-		glm::vec3 lightPosition(0.f, 5.0f, -3.f);
+		glm::vec3 lightPosition(0.f, 3.0f, 3.f);
 		glm::vec4 lightColor(1.f, 1.f, 1.f, 1.f);
+
+		teapotShader.SetUniform("u_Proj", proj);
+		teapotShader.SetUniform("u_Model", glm::mat4(1.f));
+		teapotShader.SetUniform("ourColor", lightColor.r, lightColor.g, lightColor.b, lightColor.a);
+
 		lightShader.SetUniform("u_Proj", proj);
 		lightShader.SetUniform("ourColor",lightColor.r,lightColor.g,lightColor.b,lightColor.a);
 		lightShader.SetUniform("u_Model", glm::translate(glm::mat4(1.f), lightPosition)* glm::scale(glm::mat4(1.f), { 0.2f,0.2f,0.2f }));
@@ -191,14 +192,14 @@ namespace Wabi {
 			
 			m_Shader->SetUniform("u_View", m_Camera.GetView());
 			lightShader.SetUniform("u_View", m_Camera.GetView());
-
+			teapotShader.SetUniform("u_View", m_Camera.GetView());
 			//glDrawElements(GL_TRIANGLES, m_VAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 			m_Shader->Bind();
 			m_VAO->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 			lightShader.Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		
 			for (auto el : m_LayerStack)
 			{
 				el->OnUpdate();

@@ -1,7 +1,7 @@
 #include "wbpch.h"
 #include "OpenglShader.h"
 #include "Wabisabi/Log.h"
-#include "Wabisabi/ShaderLoader.h"
+
 #include <glad/glad.h>
 namespace Wabisabi
 {

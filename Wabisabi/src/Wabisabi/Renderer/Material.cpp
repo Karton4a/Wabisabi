@@ -2,41 +2,45 @@
 #include "Material.h"
 namespace Wabisabi
 {
-	Material::Material(Texture* diffuse, Texture* specular, int32_t shiness, Texture* normal)
+	Material::Material(Texture* diffuse, Texture* specular, float_t shiness, Texture* normal)
 	{
-		if (normal == nullptr)
+		if (normal != nullptr)
 		{
-			m_Type = TextureMapping;
-		}
-		else
-		{
-			m_Type = TextureMapping | NormalMapping;
+			m_Type |= NormalMapping;
 			m_Normals.reset(normal);
 		}
+		if (specular != nullptr)
+		{
+			m_Type |= SpecularMapping;
+			m_Specular.reset(specular);
+		}
 		m_Diffuse.reset(diffuse);
-		m_Specular.reset(specular);
+		m_Type |= diffuseMapping;
 		m_Shiness = shiness;
+
 	}
-	Material::Material(const Color& diffuse, const Color& specular, int32_t shiness, const Color& ambient)
+	Material::Material(const Color& diffuse, const Color& specular, float_t shiness, const Color& ambient)
 		:m_DiffuseColor(diffuse),m_SpecularColor(specular),m_Shiness(shiness)
 	{
 		if (ambient != Color(-1.f))
 			m_AmbientColor = ambient;
 		else
 			m_AmbientColor = diffuse;
+		m_Type = ColorBased;
 	}
 	void Material::Bind(OpenglShader& shader) const
 	{
-		if (this->HasParam(TextureMapping))
+		if (this->HasParam(diffuseMapping))
 		{
 			m_Diffuse->Bind(0);
 			shader.SetUniform("material.diffuse", 0);
+			if (this->HasParam(SpecularMapping))
+			{
+				m_Specular->Bind(1);
+				shader.SetUniform("material.specular", 1);
 
-			m_Specular->Bind(1);
-			shader.SetUniform("material.specular", 1);
-
-			shader.SetUniform("material.shiness", m_Shiness);
-
+				shader.SetUniform("material.shiness", m_Shiness);
+			}
 			if (this->HasParam(NormalMapping))
 			{
 				m_Normals->Bind(2);
