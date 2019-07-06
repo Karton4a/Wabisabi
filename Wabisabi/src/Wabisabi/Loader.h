@@ -5,7 +5,6 @@
 #include <fstream>
 #include "Log.h"
 #include <glm/glm.hpp>
-#include "Renderer/Mesh.h"
 #include <chrono>
 namespace Wabisabi
 {
@@ -57,19 +56,13 @@ namespace Wabisabi
 			return std::move(buffer.str());
 
 		}
-		typedef std::chrono::high_resolution_clock Clock;
-		static void LoadObj(const std::string& path,Mesh& mesh)
+
+		static void LoadObj(const std::string& path, std::vector<glm::vec3>& vertexCoordinates,std::vector<glm::vec2>& textureCoordinates,
+			std::vector<glm::vec3>& normalCoordinates,std::vector<unsigned int>& vertexIndices,std::vector<unsigned int>& textureIndices,
+			std::vector<unsigned int>& normalIndices,bool normals)
 		{
-			std::vector<glm::vec2> textureCoordinates;
-			std::vector<glm::vec3> normalCoordinates;
-			std::vector<glm::vec3> vertexCoordinates;
-
-			std::vector<unsigned int> vertexIndices;
-			std::vector<unsigned int> normalIndices;
-			std::vector<unsigned int> textureIndices;
-			
-
-			auto start = Clock::now();
+			WB_CORE_TIMER_INIT();
+			WB_CORE_TIMER_START();
 			std::ifstream file(path);
 			std::string line;
 			std::string pattern;
@@ -94,7 +87,7 @@ namespace Wabisabi
 					{
 						WB_CORE_WARN("Obj Parse Error line : {0} : {1}", lineCount, line);
 					}
-					normalCoordinates.emplace_back(x, y, z);
+					normalCoordinates.emplace_back(glm::normalize(glm::vec3(x,y,z)));
 				}
 				else if (word == "vt")
 				{
@@ -110,7 +103,8 @@ namespace Wabisabi
 					{
 						uint8_t  numCheked = false;
 						uint8_t count = 0;
-						auto localIt = it + 1; // empty string problem;
+						while (*it == ' ') it++;
+						auto localIt = it;
 						while (*localIt != ' ')
 						{
 							if (*localIt == '/')
@@ -134,7 +128,7 @@ namespace Wabisabi
 					}
 					auto patternIt = pattern.cbegin();
 					//auto beginIt = it + 1;
-					it++;
+					while (*it == ' ') it++;
 					std::string number;
 					while(it != line.end())
 					{
@@ -142,21 +136,22 @@ namespace Wabisabi
 						{
 							patternIt = pattern.begin();
 							while(it != line.end() && *it == ' ') it++;
+							if (it == line.end()) break;
 						}
 						if (*patternIt == 'v')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							vertexIndices.push_back(std::atoi(number.c_str()));
+							vertexIndices.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 't')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							textureIndices.push_back(std::atoi(number.c_str()));
+							textureIndices.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 'n')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							normalIndices.push_back(std::atoi(number.c_str()));
+							normalIndices.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == '/')
 						{
@@ -168,20 +163,16 @@ namespace Wabisabi
 				}
 				lineCount++;
 			}
-			auto end = Clock::now();
-			WB_CORE_TRACE("File {0}: Loading Duration : {1} milliseconds",path, std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+			if (normalCoordinates.empty() && !normals)
+			{
+				
+			}
+			WB_CORE_TIMER_END();
+			WB_CORE_TRACE("File {0}: Loading Duration : {1} milliseconds",path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
 		
 			size_t memory = textureCoordinates.size() * sizeof(glm::vec2) + sizeof(glm::vec3) * (normalCoordinates.size() + vertexCoordinates.size())
 				+ (vertexIndices.size() + textureIndices.size() + normalIndices.size()) * sizeof(unsigned int);
 			WB_CORE_TRACE("File {0}: Memory used : {1} bytes",path,memory);
-			/*for (size_t i = 0; i < vertexIndices.size() ;i++)
-			{
-				mesh.PushPosition(vertexCoordinates[vertexIndices[i]]);
-				if(textureIndices.size() != 0)
-					mesh.PushTextureCoordinate(textureCoordinates[textureIndices[i]]);
-				if(normalCoordinates.size() != 0)
-					mesh.PushNormal(normalCoordinates[normalIndices[i]]);
-			}*/
 		}
 		static void FreePair(const char* vertexsrc, const char* fragmentsrc)
 		{

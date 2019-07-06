@@ -107,8 +107,11 @@ namespace Wabi {
 		
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		Mesh mesh("models/nanosuit.obj");
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glCullFace(GL_BACK);
+		Mesh mesh("models/cow.obj");
 
 		Material mat(Texture::Create("texture/container.png"), Texture::Create("texture/container_specular.png"),32);
 		mat.Bind(*m_Shader);
@@ -196,10 +199,12 @@ namespace Wabi {
 			//glDrawElements(GL_TRIANGLES, m_VAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, 0);
 			m_Shader->Bind();
 			m_VAO->Bind();
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
 			lightShader.Bind();
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
+			teapotShader.Bind();
+			mesh.GetVertexArray()->Bind();
+			glDrawElements(GL_TRIANGLES, mesh.GetVertexArray()->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,nullptr);
 			for (auto el : m_LayerStack)
 			{
 				el->OnUpdate();

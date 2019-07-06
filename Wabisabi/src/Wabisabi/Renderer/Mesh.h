@@ -12,15 +12,13 @@ namespace Wabisabi
 	class Mesh
 	{
 	public:
+		std::vector<float_t> Vertex;
+		std::vector<uint32_t> Indicies;
+	public:
 		Mesh() {};
 		Mesh(const std::string& path);
-		void PushPosition(glm::vec3 pos);
-		void PushTextureCoordinate(glm::vec2 texture);
-		void Reserve(size_t size);
-		void PushNormal(glm::vec3 normal);
+		inline const std::unique_ptr<VertexArray>& GetVertexArray() { return m_VertexArray; }
 	private:
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::vector<float_t> m_Vertex;
-		std::vector<uint32_t> m_Indicies;
+		std::unique_ptr<VertexArray> m_VertexArray;
 	};
 }

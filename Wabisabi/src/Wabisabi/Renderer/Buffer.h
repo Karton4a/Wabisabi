@@ -82,6 +82,22 @@ namespace Wabisabi
 				m_Stride += el.Size;
 			}
 		}
+		const LayoutElement& operator +=(const LayoutElement& el)
+		{
+			if (m_Layout.empty())
+			{
+				m_Layout.push_back(el);
+				m_Stride += el.Size;
+			}
+			else
+			{
+				m_Layout.push_back(el);
+				size_t last = m_Layout.size() - 1;
+				m_Layout[last].Offset = m_Layout[last - 1].Offset + m_Layout[last - 1].Size;
+				m_Stride += m_Layout[last].Size;
+			}
+			return el;
+		}
 		inline const std::vector<LayoutElement>& GetLayout() const  { return m_Layout; }
 		inline const uint32_t& GetStride() const { return m_Stride; }
 
