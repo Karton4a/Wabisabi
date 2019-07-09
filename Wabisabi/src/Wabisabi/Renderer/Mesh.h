@@ -16,9 +16,14 @@ namespace Wabisabi
 		std::vector<uint32_t> Indicies;
 	public:
 		Mesh() {};
-		Mesh(const std::string& path);
+		Mesh(std::vector<glm::vec3>& vertexCoordinates, std::vector<glm::vec2>& textureCoordinates,
+			std::vector<glm::vec3>& normalCoordinates, std::vector<unsigned int>& vertexIndices, std::vector<unsigned int>& textureIndices,
+			std::vector<unsigned int>& normalIndices);
+		inline void SetName(const std::string name) { m_Name = name; }
+		inline const std::string& GetName() { return m_Name; }
 		inline const std::unique_ptr<VertexArray>& GetVertexArray() { return m_VertexArray; }
 	private:
 		std::unique_ptr<VertexArray> m_VertexArray;
+		std::string m_Name;
 	};
 }

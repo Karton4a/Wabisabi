@@ -13,6 +13,8 @@
 #include "Loader.h"
 #include "Renderer/Material.h"
 #include "Renderer/Mesh.h"
+#include "Renderer/Model.h"
+
 
 namespace Wabi {
 
@@ -111,7 +113,8 @@ namespace Wabi {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glCullFace(GL_BACK);
-		Mesh mesh("models/cow.obj");
+		//Mesh mesh("models/teapot.obj");
+		Model mod("models/teapot.obj");
 
 		Material mat(Texture::Create("texture/container.png"), Texture::Create("texture/container_specular.png"),32);
 		mat.Bind(*m_Shader);
@@ -203,8 +206,11 @@ namespace Wabi {
 			lightShader.Bind();
 			//glDrawArrays(GL_TRIANGLES, 0, 36);
 			teapotShader.Bind();
-			mesh.GetVertexArray()->Bind();
-			glDrawElements(GL_TRIANGLES, mesh.GetVertexArray()->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,nullptr);
+			for (Mesh& mesh : mod)
+			{
+				mesh.GetVertexArray()->Bind();
+				glDrawElements(GL_TRIANGLES, mesh.GetVertexArray()->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,nullptr);
+			}
 			for (auto el : m_LayerStack)
 			{
 				el->OnUpdate();

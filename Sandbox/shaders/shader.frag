@@ -24,7 +24,7 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize((View*LightPosition) - FragmentPosition);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diffuseColor *diff * vec3(0.5f);
+    vec3 diffuse = diffuseColor * diff * vec3(0.5f);
     
     // Specular
     vec3 specularColor = vec3(texture(material.specular,v_TextureCoord));

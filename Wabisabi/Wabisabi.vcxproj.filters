@@ -128,6 +128,7 @@
       <Filter>src\Wabisabi</Filter>
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\Mesh.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
@@ -183,5 +184,6 @@
     </ClCompile>
     <ClCompile Include="src\Wabisabi\Renderer\Material.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Model.cpp" />
   </ItemGroup>
 </Project>

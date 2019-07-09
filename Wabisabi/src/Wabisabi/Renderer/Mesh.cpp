@@ -3,25 +3,18 @@
 #include "Wabisabi/Loader.h"
 #include "Buffer.h"
 #ifdef WB_DEBUG
-#include <chrono>
-#endif // !WB_DEBUG
+	#include <chrono>
+#endif // WB_DEBUG
 
 namespace Wabisabi
 {
-	Mesh::Mesh(const std::string& path)
+	Mesh::Mesh(std::vector<glm::vec3>& vertexCoordinates, std::vector<glm::vec2>& textureCoordinates,
+		std::vector<glm::vec3>& normalCoordinates, std::vector<unsigned int>& vertexIndices, std::vector<unsigned int>& textureIndices,
+		std::vector<unsigned int>& normalIndices)
 	{
 		WB_CORE_TIMER_INIT();
 	
 		m_VertexArray.reset(VertexArray::Create());
-		std::vector<glm::vec2> textureCoordinates;
-		std::vector<glm::vec3> normalCoordinates;
-		std::vector<glm::vec3> vertexCoordinates;
-
-		std::vector<unsigned int> vertexIndices;
-		std::vector<unsigned int> normalIndices;
-		std::vector<unsigned int> textureIndices;
-
-		Loader::LoadObj(path, vertexCoordinates, textureCoordinates, normalCoordinates, vertexIndices, textureIndices, normalIndices,false);
 
 		BufferLayout layout({ {ShaderDataType::Float3,"position"} });
 
@@ -74,10 +67,11 @@ namespace Wabisabi
 		
 		}
 		WB_CORE_TIMER_END();
-		WB_CORE_TRACE("File {0}: Processing time {1} milliseconds", path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
-		WB_CORE_TRACE("File {0}: Face count {1}", path, Indicies.size() / offset);
-		WB_CORE_TRACE("File {0}: Vertex count without processing {1}", path, Indicies.size() * offset);
-		WB_CORE_TRACE("File {0}: Postprocessing vertex count {1}", path, Vertex.size() / offset);
+
+		//WB_CORE_TRACE("File {0}: Processing time {1} milliseconds", path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
+		//WB_CORE_TRACE("File {0}: Face count {1}", path, Indicies.size() / offset);
+		//WB_CORE_TRACE("File {0}: Vertex count without processing {1}", path, Indicies.size() * offset);
+		//WB_CORE_TRACE("File {0}: Postprocessing vertex count {1}", path, Vertex.size() / offset);
 		m_VertexArray->AddVertexBuffer(&Vertex[0], Vertex.size() * sizeof(float),layout);
 		m_VertexArray->SetIndexBuffer(&Indicies[0], Indicies.size());
 	}

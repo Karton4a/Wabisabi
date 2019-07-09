@@ -5,7 +5,10 @@
 #include <fstream>
 #include "Log.h"
 #include <glm/glm.hpp>
-#include <chrono>
+#include "Renderer/Mesh.h"
+#ifdef WB_DEBUG
+	#include <chrono>
+#endif // WB_DEBUG
 namespace Wabisabi
 {
 	class Loader
@@ -16,37 +19,6 @@ namespace Wabisabi
 			std::string vertex = ShaderPreprocessor(LoadShader(vertexpath),vertexpath);
 			std::string fragment = ShaderPreprocessor(LoadShader(fragmentpath),fragmentpath);
 			return std::move(std::make_pair(vertex , fragment));
-			//FILE* shader = NULL;
-			//fopen_s(&shader,vertexpath.c_str(), "rb");
-
-			//fseek(shader, 0L, SEEK_END);
-			//unsigned long len = ftell(shader);
-			////int len = 0;
-			///*char ch = 1;
-			//while (!feof(shader))
-			//{
-			//	fread(&ch, sizeof(char), 1, shader);
-			//	len++;
-			//}*/
-			//rewind(shader);
-			//char* src = new char[len + 1];
-			//fread(src, sizeof(char), len, shader);
-			//src[len] = 0;
-			//const char* vertexsrc = src;
-			//fclose(shader);
-
-			//fopen_s(&shader,fragmentpath.c_str(), "rb");
-
-			//fseek(shader, 0L, SEEK_END);
-			//len = ftell(shader);
-			//rewind(shader);
-
-			//src = new char[len + 1];
-			//fread(src, sizeof(char), len, shader);
-			//src[len] = '\0';
-			//const char* fragmentsrc = src;
-			//fclose(shader);
-			//return { vertexsrc,fragmentsrc };
 		}
 		static std::string LoadShader(const std::string& path)
 		{
@@ -57,22 +29,34 @@ namespace Wabisabi
 
 		}
 
-		static void LoadObj(const std::string& path, std::vector<glm::vec3>& vertexCoordinates,std::vector<glm::vec2>& textureCoordinates,
-			std::vector<glm::vec3>& normalCoordinates,std::vector<unsigned int>& vertexIndices,std::vector<unsigned int>& textureIndices,
-			std::vector<unsigned int>& normalIndices,bool normals)
+		static void LoadObj(const std::string& path,std::vector<Mesh>& meshes)
 		{
 			WB_CORE_TIMER_INIT();
+
+			std::vector<glm::vec3> vertexCoordinates;
+			std::vector<glm::vec2> textureCoordinates;
+			std::vector<glm::vec3> normalCoordinates; 
+			//std::vector<std::pair<std::string, std::array< std::vector<unsigned int> ,3> > > vertexIndices;
+		
+			std::vector<std::pair<std::string, std::vector<unsigned int>>> vertexIndices(1);
+			std::vector<std::vector<unsigned int>> textureIndices(1);
+			std::vector<std::vector<unsigned int>> normalIndices(1);
 			WB_CORE_TIMER_START();
 			std::ifstream file(path);
 			std::string line;
 			std::string pattern;
 			float x = 0, y = 0 , z = 0;
 			uint32_t lineCount = 1;
+			
 			while (std::getline(file, line))
 			{
 				auto it = line.begin();
 				while (it != line.end() && *it != ' ' ) it++;
 				std::string word(line.begin(), it);
+				if (lineCount == 9966 - 1)
+				{
+					char c = 1;
+				}
 				if (word == "v")
 				{
 					if (!(std::istringstream(std::string(it, line.end())) >> x >> y >> z))
@@ -139,19 +123,19 @@ namespace Wabisabi
 							if (it == line.end()) break;
 						}
 						if (*patternIt == 'v')
-						{
+						{	
 							number = Word(it, line.end(), *(patternIt + 1));
-							vertexIndices.push_back(std::atoi(number.c_str()) - 1);
+							vertexIndices.back().second.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 't')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							textureIndices.push_back(std::atoi(number.c_str()) - 1);
+							textureIndices.back().push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 'n')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							normalIndices.push_back(std::atoi(number.c_str()) - 1);
+							normalIndices.back().push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == '/')
 						{
@@ -161,12 +145,39 @@ namespace Wabisabi
 						patternIt++;
 					}
 				}
+				else if (word == "o")
+				{
+					while (it != line.end() && *it == ' ') it++;
+					auto begin = it;
+					while (it != line.end() && *it != ' ') it++;
+					std::string meshName = std::string(begin, it);
+					if (!vertexIndices.back().second.empty())
+					{
+						vertexIndices.emplace_back(meshName, std::vector<unsigned int>());
+					}
+					else
+					{
+						vertexIndices.back().first = meshName;
+					}
+					if (!textureIndices.back().empty())
+					{
+						textureIndices.emplace_back();
+					}
+					if (!normalIndices.back().empty())
+					{
+						normalIndices.emplace_back();
+					}
+				}
 				lineCount++;
 			}
-			if (normalCoordinates.empty() && !normals)
+			for (size_t i = 0; i < vertexIndices.size(); i++)
 			{
-				
+				meshes.emplace_back(vertexCoordinates, textureCoordinates, normalCoordinates, vertexIndices[i].second,
+					(textureIndices.size()> i) ? textureIndices[i] : std::vector<unsigned int>(),
+					(normalIndices.size() > i) ? normalIndices[i] : std::vector<unsigned int>());
+				meshes[i].SetName(vertexIndices[i].first);
 			}
+			
 			WB_CORE_TIMER_END();
 			WB_CORE_TRACE("File {0}: Loading Duration : {1} milliseconds",path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
 		
