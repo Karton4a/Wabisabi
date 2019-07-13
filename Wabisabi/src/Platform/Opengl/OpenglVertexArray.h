@@ -1,5 +1,6 @@
 #pragma once
 #include "Wabisabi/Renderer/VertexArray.h"
+#include "Wabisabi/Types.h"
 namespace Wabisabi
 {
 	class OpenglVertexArray : public VertexArray
@@ -18,6 +19,6 @@ namespace Wabisabi
 		std::vector<std::shared_ptr<VertexBuffer>> m_VertexBuffers;
 		std::shared_ptr<IndexBuffer> m_IndexBuffer;
 		uint8_t m_LayoutLevels;
-		uint32_t m_RendererId;
+		RendererId m_RendererId;
 	};
 }

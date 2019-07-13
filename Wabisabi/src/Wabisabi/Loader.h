@@ -3,9 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
+#include <filesystem>
 #include "Log.h"
 #include <glm/glm.hpp>
 #include "Renderer/Mesh.h"
+#include "Renderer/Material.h"
+#include "Renderer/Texture.h"
 #ifdef WB_DEBUG
 	#include <chrono>
 #endif // WB_DEBUG
@@ -26,21 +29,29 @@ namespace Wabisabi
 			std::stringstream buffer;
 			buffer << file.rdbuf();
 			return std::move(buffer.str());
-
 		}
 
-		static void LoadObj(const std::string& path,std::vector<Mesh>& meshes)
+		static void LoadObj(const std::string& path,std::vector<Mesh>& meshes, std::vector<Material>& materials)
 		{
 			WB_CORE_TIMER_INIT();
-
+			std::thread* thd = nullptr;
 			std::vector<glm::vec3> vertexCoordinates;
 			std::vector<glm::vec2> textureCoordinates;
 			std::vector<glm::vec3> normalCoordinates; 
-			//std::vector<std::pair<std::string, std::array< std::vector<unsigned int> ,3> > > vertexIndices;
-		
-			std::vector<std::pair<std::string, std::vector<unsigned int>>> vertexIndices(1);
-			std::vector<std::vector<unsigned int>> textureIndices(1);
-			std::vector<std::vector<unsigned int>> normalIndices(1);
+			struct Indices
+			{
+				std::string MeshName;
+				std::string MaterialName;
+				std::vector<unsigned int> Vertex;
+				std::vector<unsigned int> Texture;
+				std::vector<unsigned int> Normal;
+				Indices(const std::string& name) : MeshName(name) {};
+				Indices() {};
+			};
+			std::vector<Indices> indices(1);
+			std::vector<MaterialTexure> subMaterial;
+			std::string materialPath;
+
 			WB_CORE_TIMER_START();
 			std::ifstream file(path);
 			std::string line;
@@ -50,13 +61,11 @@ namespace Wabisabi
 			
 			while (std::getline(file, line))
 			{
-				auto it = line.begin();
+				auto beginit = line.begin();
+				while (beginit != line.end() && (*beginit == ' ' || *beginit == '\t')) beginit++;
+				auto it = beginit;
 				while (it != line.end() && *it != ' ' ) it++;
-				std::string word(line.begin(), it);
-				if (lineCount == 9966 - 1)
-				{
-					char c = 1;
-				}
+				std::string word(beginit, it);
 				if (word == "v")
 				{
 					if (!(std::istringstream(std::string(it, line.end())) >> x >> y >> z))
@@ -98,9 +107,9 @@ namespace Wabisabi
 							}
 							else if (!numCheked)
 							{
-								if (count == 0) pattern += 'v'; 
-								else if (count == 1) pattern += 't'; 
-								else if(count == 2) pattern += 'n';
+								if (count == 0) pattern += 'v';
+								else if (count == 1) pattern += 't';
+								else if (count == 2) pattern += 'n';
 
 								numCheked = true;
 								count++;
@@ -114,76 +123,150 @@ namespace Wabisabi
 					//auto beginIt = it + 1;
 					while (*it == ' ') it++;
 					std::string number;
-					while(it != line.end())
+					while (it != line.end())
 					{
 						if (patternIt + 1 == pattern.end())
 						{
 							patternIt = pattern.begin();
-							while(it != line.end() && *it == ' ') it++;
+							while (it != line.end() && *it == ' ') it++;
 							if (it == line.end()) break;
 						}
 						if (*patternIt == 'v')
-						{	
+						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							vertexIndices.back().second.push_back(std::atoi(number.c_str()) - 1);
+							//vertexIndices.back().second.push_back(std::atoi(number.c_str()) - 1);
+							indices.back().Vertex.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 't')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							textureIndices.back().push_back(std::atoi(number.c_str()) - 1);
+							//textureIndices.back().push_back(std::atoi(number.c_str()) - 1);
+							indices.back().Texture.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 'n')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
-							normalIndices.back().push_back(std::atoi(number.c_str()) - 1);
+							//normalIndices.back().push_back(std::atoi(number.c_str()) - 1);
+							indices.back().Normal.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == '/')
 						{
 							it++;
 						}
-						
+
 						patternIt++;
 					}
 				}
 				else if (word == "o")
 				{
-					while (it != line.end() && *it == ' ') it++;
-					auto begin = it;
-					while (it != line.end() && *it != ' ') it++;
-					std::string meshName = std::string(begin, it);
-					if (!vertexIndices.back().second.empty())
-					{
-						vertexIndices.emplace_back(meshName, std::vector<unsigned int>());
-					}
-					else
-					{
-						vertexIndices.back().first = meshName;
-					}
-					if (!textureIndices.back().empty())
-					{
-						textureIndices.emplace_back();
-					}
-					if (!normalIndices.back().empty())
-					{
-						normalIndices.emplace_back();
-					}
+				while (it != line.end() && *it == ' ') it++;
+				auto begin = it;
+				while (it != line.end() && *it != ' ') it++;
+				std::string meshName = std::string(begin, it);
+				if (!indices.back().Vertex.empty())
+				{
+					indices.emplace_back(meshName);
+				}
+				else
+				{
+					indices.back().MeshName = meshName;
+					indices.back().Normal.clear();
+					indices.back().Texture.clear();
+				}
+				}
+				else if (word == "mtllib")
+				{
+				std::string materialFile = Word(it, line.end(), '\0');
+				std::filesystem::path root(path);
+				root.replace_filename(materialFile);
+				materialPath = root.string();
+				}
+				else if (word == "usemtl")
+				{
+				std::string materialName = Word(it, line.end(), ' ');
+				indices.back().MaterialName = materialName;
+				subMaterial.push_back(LoadOneMaterial(materialPath, materialName));
 				}
 				lineCount++;
 			}
-			for (size_t i = 0; i < vertexIndices.size(); i++)
+			for (auto it = subMaterial.begin(); it != subMaterial.end() ; it++)
 			{
-				meshes.emplace_back(vertexCoordinates, textureCoordinates, normalCoordinates, vertexIndices[i].second,
-					(textureIndices.size()> i) ? textureIndices[i] : std::vector<unsigned int>(),
-					(normalIndices.size() > i) ? normalIndices[i] : std::vector<unsigned int>());
-				meshes[i].SetName(vertexIndices[i].first);
+				auto res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.DiffusePath == (*it).DiffusePath; });
+				if (res != it) it->Diffuse = res->Diffuse; else it->Diffuse = Texture::Create(it->DiffusePath.string());
+
+				res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.SpecularPath == (*it).SpecularPath; });
+				if (res != it) it->Specular = res->Specular; else it->Specular = Texture::Create(it->SpecularPath.string());
+
+				res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.NormalPath == (*it).NormalPath; });
+				if (res != it) it->Normal = res->Normal; else it->Normal = Texture::Create(it->NormalPath.string());
+			}
+			for (Indices& el : indices)
+			{
+				meshes.emplace_back(vertexCoordinates, textureCoordinates, normalCoordinates, el.Vertex, el.Texture, el.Normal);
+				meshes.back().SetName(el.MeshName);
+				int res = -1;
+				for (size_t i = 0; i < subMaterial.size();i++)
+				{
+					if (subMaterial[i].Name == el.MaterialName)
+					{
+						res = i;
+					}
+				}
+				meshes.back().SetMaterialId(res);
+			}
+			for (const auto& el : subMaterial)
+			{
+				materials.emplace_back(el.Diffuse, el.Specular, el.Shiness, el.Normal);
+				materials.back().SetName(el.Name);
 			}
 			
 			WB_CORE_TIMER_END();
 			WB_CORE_TRACE("File {0}: Loading Duration : {1} milliseconds",path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
-		
-			size_t memory = textureCoordinates.size() * sizeof(glm::vec2) + sizeof(glm::vec3) * (normalCoordinates.size() + vertexCoordinates.size())
-				+ (vertexIndices.size() + textureIndices.size() + normalIndices.size()) * sizeof(unsigned int);
-			WB_CORE_TRACE("File {0}: Memory used : {1} bytes",path,memory);
+		}
+		static void LoadMtl(const std::string& filePath,std::vector<Material>& materials)
+		{
+			std::filesystem::path path(filePath);
+			std::ifstream file(path);
+			std::string line;
+			std::vector<MaterialTexure> textures; 
+			while (std::getline(file, line))
+			{
+				auto beginit = line.begin();
+			
+				while (beginit != line.end() && (*beginit == ' ' || *beginit == '\t')) beginit++;
+				auto it = beginit;
+				while (it != line.end() && *it != ' ') it++;
+				std::string word(beginit, it);
+				if (word == "newmtl")
+				{
+					textures.emplace_back(Word(it, line.end(), ' '));
+				}
+				else if (word == "Ns")
+				{
+					textures.back().Shiness = std::atof(Word(it, line.end(), ' ').c_str());
+				}
+				else if (word == "map_Kd")
+				{
+					path.replace_filename(Word(it, line.end(), '\0'));
+					textures.back().Diffuse = Texture::Create(path.string());
+				}
+				else if (word == "map_Ks")
+				{
+					path.replace_filename(Word(it, line.end(), '\0'));
+					textures.back().Specular = Texture::Create(path.string());
+				}
+				else if (word == "map_Bump")
+				{
+					path.replace_filename(Word(it, line.end(), '\0'));
+					textures.back().Normal = Texture::Create(path.string());
+				}
+			}
+
+			for (const auto& el : textures)
+			{
+				materials.emplace_back(el.Diffuse, el.Specular,el.Shiness,el.Normal);
+				materials.back().SetName(el.Name);
+			}
 		}
 		static void FreePair(const char* vertexsrc, const char* fragmentsrc)
 		{
@@ -191,9 +274,76 @@ namespace Wabisabi
 			delete[] fragmentsrc;
 		}
 	private:
+		struct MaterialTexure
+		{
+			std::string Name;
+			float Shiness;
+			Texture* Diffuse;
+			std::filesystem::path DiffusePath;
+			Texture* Specular;
+			std::filesystem::path SpecularPath;
+			Texture* Normal;
+			std::filesystem::path NormalPath;
+			MaterialTexure(const std::string& name) :Name(name), Diffuse(nullptr), Specular(nullptr), Normal(nullptr), Shiness(0) {};
+			MaterialTexure() : Diffuse(nullptr), Specular(nullptr), Normal(nullptr), Shiness(0) {};
+		};
+		static MaterialTexure LoadOneMaterial(const std::string& gloabalPath, const std::string& name)
+		{
+			std::filesystem::path path(gloabalPath);
+			std::ifstream file(gloabalPath);
+			std::string line;
+			std::string word("");
+			std::string materialName("");
+			MaterialTexure subMaterial;
+			while (materialName != name && std::getline(file,line))
+			{
+				std::istringstream(line) >> word >> materialName;
+			}
+			if (!file.eof())
+			{
+				word.clear();
+				subMaterial.Name = materialName;
+				while (word != "newmtl" && std::getline(file, line))
+				{
+					auto beginit = line.begin();
+					while (beginit != line.end() && (*beginit == ' ' || *beginit == '\t')) beginit++;
+					auto it = beginit;
+					while (it != line.end() && *it != ' ') it++;
+					word = std::string(beginit, it);
+
+					if (word == "Ns")
+					{
+						subMaterial.Shiness = std::atof(Word(it, line.end(), ' ').c_str());
+					}
+					else if (word == "map_Kd")
+					{
+						path.replace_filename(Word(it, line.end(), '\0'));
+						subMaterial.DiffusePath = path;
+						//subMaterial.Diffuse = Texture::Create(path.string());
+					}
+					else if (word == "map_Ks")
+					{
+						path.replace_filename(Word(it, line.end(), '\0'));
+						subMaterial.SpecularPath = path;
+						//subMaterial.Specular = Texture::Create(path.string());
+					}
+					else if (word == "map_Bump")
+					{
+						path.replace_filename(Word(it, line.end(), '\0'));
+						subMaterial.NormalPath = path;
+						//subMaterial.Normal = Texture::Create(path.string());
+					}
+				}
+			}
+			else
+			{
+				WB_CORE_TRACE("Material load failed name:{0} file:{1}", name, gloabalPath);
+			}
+			return subMaterial;
+		}
 		static std::string Word(std::string::iterator& it, const std::string::iterator& end, const char delimiter)
 		{
-
+			while (it != end && (*it == ' '|| *it == '\t')) it++;
 			std::string::iterator saveIt = it;
 			while (it != end && *it != delimiter)
 			{

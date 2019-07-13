@@ -1,5 +1,6 @@
 #pragma once
 #include "VertexArray.h"
+#include "Wabisabi/Types.h"
 #include <glm/glm.hpp>
 namespace Wabisabi
 {
@@ -21,8 +22,11 @@ namespace Wabisabi
 			std::vector<unsigned int>& normalIndices);
 		inline void SetName(const std::string name) { m_Name = name; }
 		inline const std::string& GetName() { return m_Name; }
-		inline const std::unique_ptr<VertexArray>& GetVertexArray() { return m_VertexArray; }
+		inline const std::unique_ptr<VertexArray>& GetVertexArray() const { return m_VertexArray; }
+		inline void SetMaterialId(MaterialId id) { m_MaterialId = id; }
+		inline MaterialId GetMaterialId() { return m_MaterialId; }
 	private:
+		MaterialId m_MaterialId;
 		std::unique_ptr<VertexArray> m_VertexArray;
 		std::string m_Name;
 	};

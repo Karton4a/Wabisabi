@@ -131,13 +131,13 @@ namespace Wabisabi
 			WB_CORE_WARN("Uniform {0} doesn't exist or not used", name);
 		return location;
 	}
-	void OpenglShader::SetUniform(const std::string& name, int32_t num)
+	void OpenglShader::SetUniform(const std::string& name, Int num)
 	{
 		int32_t loc = GetLocation(name);
 		glUseProgram(m_RendererId);
 		glUniform1i(loc, num);
 	}
-	void OpenglShader::SetUniform(const std::string& name, float_t num)
+	void OpenglShader::SetUniform(const std::string& name, Float num)
 	{
 		int32_t loc = GetLocation(name);
 		glUseProgram(m_RendererId);
@@ -155,18 +155,30 @@ namespace Wabisabi
 		glUseProgram(m_RendererId);
 		glUniform1i(loc, (int)num);
 	}
-	void OpenglShader::SetUniform(const std::string& name, float_t num1, float_t num2, float_t num3, float_t num4)
+	void OpenglShader::SetUniform(const std::string& name, Float num1, Float num2, Float num3, Float num4)
 	{
 		int32_t loc = GetLocation(name);
 		glUseProgram(m_RendererId);
 		glUniform4f(loc, num1,num2, num3, num4);
 
 	}
-	void OpenglShader::SetUniform(const std::string& name, float_t num1, float_t num2, float_t num3)
+	void OpenglShader::SetUniform(const std::string& name, Float4 vec)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform4f(loc, vec.x, vec.y, vec.z, vec.w);
+	}
+	void OpenglShader::SetUniform(const std::string& name, Float num1, Float num2, Float num3)
 	{
 		int32_t loc = GetLocation(name);
 		glUseProgram(m_RendererId);
 		glUniform3f(loc, num1, num2, num3);
+	}
+	void OpenglShader::SetUniform(const std::string& name, Float3 vec)
+	{
+		int32_t loc = GetLocation(name);
+		glUseProgram(m_RendererId);
+		glUniform3f(loc, vec.x, vec.y, vec.z);
 	}
 	void OpenglShader::SetUniform(const std::string& name, const glm::mat4& matrix)
 	{

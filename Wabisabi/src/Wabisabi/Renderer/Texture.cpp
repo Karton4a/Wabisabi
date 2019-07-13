@@ -8,6 +8,7 @@ namespace Wabisabi
 {
 	void Texture::LoadTexture(const std::string& path)
 	{
+		stbi_set_flip_vertically_on_load(1);
 		m_Data = (uint8_t*)stbi_load(path.c_str(), (int*)&m_Width, (int*)&m_Height, (int*)&m_BPP, 4);
 	}
 	void Texture::DeleteData()

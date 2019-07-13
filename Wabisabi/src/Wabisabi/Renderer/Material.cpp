@@ -19,10 +19,10 @@ namespace Wabisabi
 		m_Shiness = shiness;
 
 	}
-	Material::Material(const Color& diffuse, const Color& specular, float_t shiness, const Color& ambient)
+	Material::Material(const RGBA& diffuse, const RGBA& specular, float_t shiness, const RGBA& ambient)
 		:m_DiffuseColor(diffuse),m_SpecularColor(specular),m_Shiness(shiness)
 	{
-		if (ambient != Color(-1.f))
+		if (ambient != RGBA(-1.f))
 			m_AmbientColor = ambient;
 		else
 			m_AmbientColor = diffuse;

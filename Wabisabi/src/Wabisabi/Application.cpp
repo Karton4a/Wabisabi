@@ -14,7 +14,7 @@
 #include "Renderer/Material.h"
 #include "Renderer/Mesh.h"
 #include "Renderer/Model.h"
-
+#include <chrono>
 
 namespace Wabi {
 
@@ -111,11 +111,11 @@ namespace Wabi {
 		glEnable(GL_DEPTH_TEST);
 		//glEnable(GL_CULL_FACE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glCullFace(GL_BACK);
 		//Mesh mesh("models/teapot.obj");
-		Model mod("models/teapot.obj");
-
+		Model mod("models/ball/earth_ball.obj");
+	
 		Material mat(Texture::Create("texture/container.png"), Texture::Create("texture/container_specular.png"),32);
 		mat.Bind(*m_Shader);
 		
@@ -150,7 +150,7 @@ namespace Wabi {
 		float oldy = (float)(m_Window->GetHeight() / 2);
 		Input::SetMousePosition(oldx, oldy);
 		Input::HideCursor();
-
+		
 		while (m_Running)
 		{	
 			glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -158,7 +158,7 @@ namespace Wabi {
 
 			glm::mat4 model(1.f);
 			rot = glm::rotate(rot, 0.04f, {0.f,1.f,0.f});
-			model = glm::translate(model, { 0.f,.0f,-3.f });
+			model = glm::translate(model, { 0.f,.0f,-3.f })* glm::scale(glm::mat4(1.f), {0.05f,0.05f,0.05f});
 			m_Shader->SetUniform("u_Model", model);
 			auto [posX,posY] = Input::MousePosition();
 			float offsetX = posX - oldx;
@@ -206,11 +206,14 @@ namespace Wabi {
 			lightShader.Bind();
 			//glDrawArrays(GL_TRIANGLES, 0, 36);
 			teapotShader.Bind();
+			
 			for (Mesh& mesh : mod)
 			{
 				mesh.GetVertexArray()->Bind();
+				mod.BindMaterial(mesh.GetMaterialId(), *m_Shader);
 				glDrawElements(GL_TRIANGLES, mesh.GetVertexArray()->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT,nullptr);
 			}
+			
 			for (auto el : m_LayerStack)
 			{
 				el->OnUpdate();

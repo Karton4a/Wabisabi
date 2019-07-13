@@ -129,6 +129,7 @@
     </ClInclude>
     <ClInclude Include="src\Wabisabi\Renderer\Mesh.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Model.h" />
+    <ClInclude Include="src\Wabisabi\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">

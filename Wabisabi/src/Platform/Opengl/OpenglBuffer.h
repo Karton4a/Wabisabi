@@ -1,6 +1,7 @@
 #pragma once
 #include "wbpch.h"
 #include "Wabisabi/Renderer/Buffer.h"
+#include "Wabisabi/Types.h"
 
 namespace Wabisabi
 {
@@ -16,7 +17,7 @@ namespace Wabisabi
 		virtual const BufferLayout& GetLayout() const override { return m_Layout; };
 	private:
 		BufferLayout m_Layout;
-		uint32_t m_RendererId;
+		RendererId m_RendererId;
 	};
 
 	class OpenglIndexBuffer: public IndexBuffer
@@ -29,7 +30,7 @@ namespace Wabisabi
 		virtual void Reset(const uint32_t* data, uint32_t count) const override final;
 		inline virtual uint32_t GetCount() const override final { return m_Count; }
 	private:
-		uint32_t m_RendererId;
+		RendererId m_RendererId;
 		uint32_t m_Count;
 	
 	};

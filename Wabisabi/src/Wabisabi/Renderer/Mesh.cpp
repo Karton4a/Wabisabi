@@ -1,18 +1,12 @@
 #include "wbpch.h"
 #include "Mesh.h"
-#include "Wabisabi/Loader.h"
 #include "Buffer.h"
-#ifdef WB_DEBUG
-	#include <chrono>
-#endif // WB_DEBUG
-
 namespace Wabisabi
 {
 	Mesh::Mesh(std::vector<glm::vec3>& vertexCoordinates, std::vector<glm::vec2>& textureCoordinates,
 		std::vector<glm::vec3>& normalCoordinates, std::vector<unsigned int>& vertexIndices, std::vector<unsigned int>& textureIndices,
-		std::vector<unsigned int>& normalIndices)
+		std::vector<unsigned int>& normalIndices) : m_MaterialId(-1)
 	{
-		WB_CORE_TIMER_INIT();
 	
 		m_VertexArray.reset(VertexArray::Create());
 
@@ -27,7 +21,7 @@ namespace Wabisabi
 
 		float* vertex = new float[offset];
 		uint8_t localOffset = 0;
-		WB_CORE_TIMER_START();
+
 		for (size_t i = 0; i < vertexIndices.size(); i++)
 		{
 			glm::vec3 vertexCoord = vertexCoordinates[vertexIndices[i]];
@@ -41,7 +35,7 @@ namespace Wabisabi
 			}
 			if (!normalIndices.empty())
 			{
-				glm::vec2 normalCoord = normalCoordinates[normalIndices[i]];
+				glm::vec3 normalCoord = normalCoordinates[normalIndices[i]];
 				memcpy_s(vertex + localOffset, (offset - localOffset) * sizeof(float), &normalCoord, 3 * sizeof(float));
 				localOffset += 3;
 			}
@@ -66,12 +60,7 @@ namespace Wabisabi
 			}
 		
 		}
-		WB_CORE_TIMER_END();
 
-		//WB_CORE_TRACE("File {0}: Processing time {1} milliseconds", path, WB_CORE_TIMER_END_MINUS_START(milliseconds));
-		//WB_CORE_TRACE("File {0}: Face count {1}", path, Indicies.size() / offset);
-		//WB_CORE_TRACE("File {0}: Vertex count without processing {1}", path, Indicies.size() * offset);
-		//WB_CORE_TRACE("File {0}: Postprocessing vertex count {1}", path, Vertex.size() / offset);
 		m_VertexArray->AddVertexBuffer(&Vertex[0], Vertex.size() * sizeof(float),layout);
 		m_VertexArray->SetIndexBuffer(&Indicies[0], Indicies.size());
 	}
