@@ -15,4 +15,7 @@ namespace Wabisabi
 	using RGBA       =   Float4;
 	using RendererId =   uint32_t;
 	using MaterialId =   int32_t;
+	using Float4x4   =   glm::mat4;
+	using Float3x3   =   glm::mat3;
+	using Float2x2   =   glm::mat2;
 }

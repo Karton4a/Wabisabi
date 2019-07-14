@@ -12,7 +12,7 @@ namespace Wabisabi
 
 		inline int GetButton() { return m_Button; }
 
-		virtual std::string ToString() const override final
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: " << m_Button << std::endl;
@@ -32,7 +32,7 @@ namespace Wabisabi
 
 		inline int GetButton() { return m_Button; }
 
-		virtual std::string ToString() const override final
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: " << m_Button << std::endl;
@@ -52,7 +52,7 @@ namespace Wabisabi
 
 		inline std::pair<double, double> GetPosition() { return {m_PosX,m_PosY}; }
 
-		virtual std::string ToString() const override final
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: X =  "<< m_PosX <<" Y = "<< m_PosY << std::endl;
@@ -72,7 +72,7 @@ namespace Wabisabi
 
 		inline std::pair<double, double> GetPosition() { return { m_OffsetX,m_OffsetY }; }
 
-		virtual std::string ToString() const override final
+		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: X =  " << m_OffsetX << " Y = " << m_OffsetY << std::endl;

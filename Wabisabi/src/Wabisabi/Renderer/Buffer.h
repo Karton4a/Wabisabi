@@ -5,7 +5,7 @@ namespace Wabisabi
 {
 	enum class ShaderDataType
 	{
-		None = 0,Float,Float2,Float3,Float4,Int,Int2,Int3,Int4,Uint,Uint2,Uint3,Uint4
+		None = 0,Float,Float2,Float3,Float4,Int,Int2,Int3,Int4,Uint,Uint2,Uint3,Uint4,Float4x4,Float3x3,Float2x2,
 	};
 
 	static uint16_t GetTypeSize(ShaderDataType type)
@@ -14,18 +14,21 @@ namespace Wabisabi
 		{
 		case Wabisabi::ShaderDataType::None:   WB_CORE_ASSERT(false,"Unsuported Type None") return 0;
 
-		case Wabisabi::ShaderDataType::Float:  return sizeof(float);
-		case Wabisabi::ShaderDataType::Float2: return 2*sizeof(float);
-		case Wabisabi::ShaderDataType::Float3: return 3*sizeof(float);
-		case Wabisabi::ShaderDataType::Float4: return 4*sizeof(float);
-		case Wabisabi::ShaderDataType::Int:    return sizeof(float);
-		case Wabisabi::ShaderDataType::Int2:   return 2*sizeof(float);
-		case Wabisabi::ShaderDataType::Int3:   return 3*sizeof(float);
-		case Wabisabi::ShaderDataType::Int4:   return 4*sizeof(float);
-		case Wabisabi::ShaderDataType::Uint:   return sizeof(float);
-		case Wabisabi::ShaderDataType::Uint2:  return 2*sizeof(float);
-		case Wabisabi::ShaderDataType::Uint3:  return 3*sizeof(float);
-		case Wabisabi::ShaderDataType::Uint4:  return 4*sizeof(float);
+		case Wabisabi::ShaderDataType::Float:       return sizeof(float);
+		case Wabisabi::ShaderDataType::Float2:      return 2*sizeof(float);
+		case Wabisabi::ShaderDataType::Float3:      return 3*sizeof(float);
+		case Wabisabi::ShaderDataType::Float4:      return 4*sizeof(float);
+		case Wabisabi::ShaderDataType::Int:         return sizeof(int);
+		case Wabisabi::ShaderDataType::Int2:        return 2*sizeof(int);
+		case Wabisabi::ShaderDataType::Int3:        return 3*sizeof(int);
+		case Wabisabi::ShaderDataType::Int4:        return 4*sizeof(int);
+		case Wabisabi::ShaderDataType::Uint:        return sizeof(unsigned int);
+		case Wabisabi::ShaderDataType::Uint2:       return 2*sizeof(unsigned int);
+		case Wabisabi::ShaderDataType::Uint3:       return 3*sizeof(unsigned int);
+		case Wabisabi::ShaderDataType::Uint4:       return 4*sizeof(unsigned int);
+		case Wabisabi::ShaderDataType::Float4x4:	return 4 * 4 * sizeof(float);
+		case Wabisabi::ShaderDataType::Float3x3:	return 3 * 3 * sizeof(float);
+		case Wabisabi::ShaderDataType::Float2x2:	return 2 * 2 * sizeof(float);
 		}
 		return 0;
 	}
@@ -35,18 +38,21 @@ namespace Wabisabi
 		{
 		case Wabisabi::ShaderDataType::None:   WB_CORE_ASSERT(false, "Unsuported Type None") return 0;
 
-		case Wabisabi::ShaderDataType::Float:  return 1;
-		case Wabisabi::ShaderDataType::Float2: return 2;
-		case Wabisabi::ShaderDataType::Float3: return 3;
-		case Wabisabi::ShaderDataType::Float4: return 4;
-		case Wabisabi::ShaderDataType::Int:    return 1;
-		case Wabisabi::ShaderDataType::Int2:   return 2;
-		case Wabisabi::ShaderDataType::Int3:   return 3;
-		case Wabisabi::ShaderDataType::Int4:   return 4;
-		case Wabisabi::ShaderDataType::Uint:   return 1;
-		case Wabisabi::ShaderDataType::Uint2:  return 2;
-		case Wabisabi::ShaderDataType::Uint3:  return 3;
-		case Wabisabi::ShaderDataType::Uint4:  return 4;
+		case Wabisabi::ShaderDataType::Float:     return 1;
+		case Wabisabi::ShaderDataType::Float2:    return 2;
+		case Wabisabi::ShaderDataType::Float3:    return 3;
+		case Wabisabi::ShaderDataType::Float4:    return 4;
+		case Wabisabi::ShaderDataType::Int:       return 1;
+		case Wabisabi::ShaderDataType::Int2:      return 2;
+		case Wabisabi::ShaderDataType::Int3:      return 3;
+		case Wabisabi::ShaderDataType::Int4:      return 4;
+		case Wabisabi::ShaderDataType::Uint:      return 1;
+		case Wabisabi::ShaderDataType::Uint2:     return 2;
+		case Wabisabi::ShaderDataType::Uint3:     return 3;
+		case Wabisabi::ShaderDataType::Uint4:     return 4;
+		case Wabisabi::ShaderDataType::Float4x4:  return 16;
+		case Wabisabi::ShaderDataType::Float3x3:  return 9;
+		case Wabisabi::ShaderDataType::Float2x2:  return 4;
 		}
 		return 0;
 	}
@@ -62,7 +68,7 @@ namespace Wabisabi
 		LayoutElement()
 			:Type(ShaderDataType::None), Name(""), Size(0), Count(0), Offset(0), Normalized(false) {}
 		LayoutElement(ShaderDataType type,const std::string& name,bool normalized = false)
-			:Type(type),Name(name),Size(GetTypeSize(type)),Count(GetTypeCount(type)),Offset(0),Normalized(normalized) {}
+			:Name(name),Size(GetTypeSize(type)),Count(GetTypeCount(type)),Offset(0), Type(type), Normalized(normalized) {}
 	};
 	class BufferLayout
 	{

@@ -10,7 +10,7 @@
 namespace Wabisabi 
 {
 	static bool s_GLFWInit = false;
-	
+	unsigned int WindowsWindow::s_objCount = 0;
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		WB_CORE_ERROR("GLFW Error:{0}, {1}", error, description);
@@ -32,7 +32,7 @@ namespace Wabisabi
 	{
 		glfwPollEvents();
 		
-		glfwSwapBuffers(m_Window);
+		m_GraphicContext->SwapBuffers();
 	}
 	void WindowsWindow::SetVSync(bool enabled) 
 	{

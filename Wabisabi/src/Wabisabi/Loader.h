@@ -189,16 +189,16 @@ namespace Wabisabi
 				}
 				lineCount++;
 			}
-			for (auto it = subMaterial.begin(); it != subMaterial.end() ; it++)
+			for (auto& it = subMaterial.begin(); it != subMaterial.end() ; it++)
 			{
-				auto res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.DiffusePath == (*it).DiffusePath; });
-				if (res != it) it->Diffuse = res->Diffuse; else it->Diffuse = Texture::Create(it->DiffusePath.string());
+				auto res = std::find_if(subMaterial.begin(), it, [it](const MaterialTexure& el) { return el.DiffusePath == (*it).DiffusePath; });
+				if (res != it) it->Diffuse = res->Diffuse; else it->Diffuse.reset(Texture::Create(it->DiffusePath.string()));
 
-				res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.SpecularPath == (*it).SpecularPath; });
-				if (res != it) it->Specular = res->Specular; else it->Specular = Texture::Create(it->SpecularPath.string());
+				res = std::find_if(subMaterial.begin(), it, [it](const MaterialTexure& el) { return el.SpecularPath == (*it).SpecularPath; });
+				if (res != it) it->Specular = res->Specular; else it->Specular.reset(Texture::Create(it->SpecularPath.string()));
 
-				res = std::find_if(subMaterial.begin(), it, [&it](const MaterialTexure& el) { return el.NormalPath == (*it).NormalPath; });
-				if (res != it) it->Normal = res->Normal; else it->Normal = Texture::Create(it->NormalPath.string());
+				res = std::find_if(subMaterial.begin(), it, [it](const MaterialTexure& el) { return el.NormalPath == (*it).NormalPath; });
+				if (res != it) it->Normal = res->Normal; else it->Normal.reset(Texture::Create(it->NormalPath.string()));
 			}
 			for (Indices& el : indices)
 			{
@@ -248,17 +248,17 @@ namespace Wabisabi
 				else if (word == "map_Kd")
 				{
 					path.replace_filename(Word(it, line.end(), '\0'));
-					textures.back().Diffuse = Texture::Create(path.string());
+					textures.back().Diffuse.reset(Texture::Create(path.string()));
 				}
 				else if (word == "map_Ks")
 				{
 					path.replace_filename(Word(it, line.end(), '\0'));
-					textures.back().Specular = Texture::Create(path.string());
+					textures.back().Specular.reset(Texture::Create(path.string()));
 				}
 				else if (word == "map_Bump")
 				{
 					path.replace_filename(Word(it, line.end(), '\0'));
-					textures.back().Normal = Texture::Create(path.string());
+					textures.back().Normal.reset(Texture::Create(path.string()));
 				}
 			}
 
@@ -278,19 +278,23 @@ namespace Wabisabi
 		{
 			std::string Name;
 			float Shiness;
-			Texture* Diffuse;
+			float Transparency;
+			RGBA AmbientIntensvity;
+			RGBA DiffuseIntensvity;
+			RGBA SpecualarIntensvity;
+			std::shared_ptr<Texture> Diffuse;
 			std::filesystem::path DiffusePath;
-			Texture* Specular;
+			std::shared_ptr<Texture> Specular;
 			std::filesystem::path SpecularPath;
-			Texture* Normal;
+			std::shared_ptr<Texture> Normal;
 			std::filesystem::path NormalPath;
 			MaterialTexure(const std::string& name) :Name(name), Diffuse(nullptr), Specular(nullptr), Normal(nullptr), Shiness(0) {};
 			MaterialTexure() : Diffuse(nullptr), Specular(nullptr), Normal(nullptr), Shiness(0) {};
 		};
-		static MaterialTexure LoadOneMaterial(const std::string& gloabalPath, const std::string& name)
+		static MaterialTexure LoadOneMaterial(const std::string& globalPath, const std::string& name)
 		{
-			std::filesystem::path path(gloabalPath);
-			std::ifstream file(gloabalPath);
+			std::filesystem::path path(globalPath);
+			std::ifstream file(globalPath);
 			std::string line;
 			std::string word("");
 			std::string materialName("");
@@ -303,6 +307,7 @@ namespace Wabisabi
 			{
 				word.clear();
 				subMaterial.Name = materialName;
+				float x = 0 , y = 0, z = 0;
 				while (word != "newmtl" && std::getline(file, line))
 				{
 					auto beginit = line.begin();
@@ -314,6 +319,52 @@ namespace Wabisabi
 					if (word == "Ns")
 					{
 						subMaterial.Shiness = std::atof(Word(it, line.end(), ' ').c_str());
+					}
+					else if (word == "Ka")
+					{
+						if (!(std::istringstream(std::string(it, line.end())) >> x >> y >> z))
+						{
+							WB_CORE_WARN("Material file parse error path : {0} material {1} property {2}", globalPath, materialName,word);
+							subMaterial.AmbientIntensvity = RGBA(0.f);
+						}
+						else subMaterial.AmbientIntensvity = RGBA(x,y,z,1.f);
+					}
+					else if (word == "Kd")
+					{
+						if (!(std::istringstream(std::string(it, line.end())) >> x >> y >> z))
+						{
+							WB_CORE_WARN("Material file parse error path : {0} material {1} property {2}", globalPath, materialName, word);
+							subMaterial.DiffuseIntensvity = RGBA(0.f);
+						}
+						else subMaterial.DiffuseIntensvity = RGBA(x, y, z, 1.f);
+					}
+					else if (word == "Ks")
+					{
+						if (!(std::istringstream(std::string(it, line.end())) >> x >> y >> z))
+						{
+							WB_CORE_WARN("Material file parse error path : {0} material {1} property {2}", globalPath, materialName, word);
+							subMaterial.SpecualarIntensvity = RGBA(0.f);
+						}
+						else subMaterial.SpecualarIntensvity = RGBA(x, y, z, 1.f);
+						
+					}
+					else if (word == "d")
+					{
+						if (!(std::istringstream(std::string(it, line.end())) >> x))
+						{
+							WB_CORE_WARN("Material file parse error path : {0} material {1} property {2}", globalPath, materialName, word);
+							subMaterial.Transparency = 1.f;
+						}
+						else subMaterial.Transparency = x;
+					}
+					else if (word == "Tr")
+					{
+						if (!(std::istringstream(std::string(it, line.end())) >> x))
+						{
+							WB_CORE_WARN("Material file parse error path : {0} material {1} property {2}", globalPath, materialName, word);
+							subMaterial.Transparency = 1.f;
+						}
+						else subMaterial.Transparency = 1.f - x;
 					}
 					else if (word == "map_Kd")
 					{
@@ -337,7 +388,7 @@ namespace Wabisabi
 			}
 			else
 			{
-				WB_CORE_TRACE("Material load failed name:{0} file:{1}", name, gloabalPath);
+				WB_CORE_TRACE("Material load failed name:{0} file:{1}", name, globalPath);
 			}
 			return subMaterial;
 		}

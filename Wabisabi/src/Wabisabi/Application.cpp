@@ -114,9 +114,9 @@ namespace Wabi {
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glCullFace(GL_BACK);
 		//Mesh mesh("models/teapot.obj");
-		Model mod("models/ball/earth_ball.obj");
+		Model mod("models/nanosuit/nanosuit.obj"); // models/ball/earth_ball.obj nanosuit/nanosuit.obj
 	
-		Material mat(Texture::Create("texture/container.png"), Texture::Create("texture/container_specular.png"),32);
+		Material mat(std::shared_ptr<Texture>(Texture::Create("texture/container.png")), std::shared_ptr<Texture>(Texture::Create("texture/container_specular.png")),32);
 		mat.Bind(*m_Shader);
 		
 		auto [vertexsrc1, fragmentsrc1] = Loader::LoadShaderPair("shaders/simple.vert", "shaders/lightSource.frag");
@@ -150,15 +150,14 @@ namespace Wabi {
 		float oldy = (float)(m_Window->GetHeight() / 2);
 		Input::SetMousePosition(oldx, oldy);
 		Input::HideCursor();
-		
 		while (m_Running)
 		{	
 			glClearColor(0.f, 0.f, 0.f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glm::mat4 model(1.f);
-			rot = glm::rotate(rot, 0.04f, {0.f,1.f,0.f});
-			model = glm::translate(model, { 0.f,.0f,-3.f })* glm::scale(glm::mat4(1.f), {0.05f,0.05f,0.05f});
+			rot = glm::rotate(rot, 0.04f, {0.f,1.f,0.f}); 
+			model = glm::translate(model, { 0.f,.0f,-3.f });//* glm::scale(glm::mat4(1.f), {0.05f,0.05f,0.05f});
 			m_Shader->SetUniform("u_Model", model);
 			auto [posX,posY] = Input::MousePosition();
 			float offsetX = posX - oldx;
@@ -206,7 +205,11 @@ namespace Wabi {
 			lightShader.Bind();
 			//glDrawArrays(GL_TRIANGLES, 0, 36);
 			teapotShader.Bind();
-			
+			mod.SetPosition({ 0.f,-0.0f,-3.f });
+			mod.Rotate(1.f, {0.f,1.f,0.f});
+			//mod.SetSize({0.05f,0.05f,0.05f});
+			m_Shader->SetUniform("u_Model", mod.GetModel());
+			m_Shader->Bind();
 			for (Mesh& mesh : mod)
 			{
 				mesh.GetVertexArray()->Bind();

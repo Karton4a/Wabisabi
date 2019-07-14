@@ -2,19 +2,20 @@
 #include "Material.h"
 namespace Wabisabi
 {
-	Material::Material(Texture* diffuse, Texture* specular, float_t shiness, Texture* normal)
+	Material::Material(const std::shared_ptr<Texture>& diffuse, const std::shared_ptr<Texture>& specular, float_t shiness, const std::shared_ptr<Texture>& normal)
 	{
+		
 		if (normal != nullptr)
 		{
 			m_Type |= NormalMapping;
-			m_Normals.reset(normal);
+			m_Normals = normal;
 		}
 		if (specular != nullptr)
 		{
 			m_Type |= SpecularMapping;
-			m_Specular.reset(specular);
+			m_Specular = specular;
 		}
-		m_Diffuse.reset(diffuse);
+		m_Diffuse = diffuse;
 		m_Type |= diffuseMapping;
 		m_Shiness = shiness;
 

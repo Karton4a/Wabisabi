@@ -40,7 +40,5 @@ namespace Wabisabi
 
 	public:
 		static unsigned int s_objCount; //TODO сделать что то поумнее
-	
 	};
-	unsigned int WindowsWindow::s_objCount = 0;
 }

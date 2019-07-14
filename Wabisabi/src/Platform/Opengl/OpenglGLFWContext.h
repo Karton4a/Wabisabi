@@ -9,8 +9,8 @@ namespace Wabisabi
 		
 	public:
 		OpenglGLFWContext(GLFWwindow* window);
-		virtual void Init() override final;
-		virtual void SwapBuffers() override final;
+		virtual void Init() override;
+		virtual void SwapBuffers() override;
 	private:
 		GLFWwindow* m_Window;
 	};

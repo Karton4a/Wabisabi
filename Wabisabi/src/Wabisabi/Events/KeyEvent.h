@@ -24,7 +24,7 @@ namespace Wabisabi
 		{};
 		inline unsigned int GetRepeatCount() { return m_RepeatCount; }
 
-		std::string ToString() const override  final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event:" << m_KeyCode << " " << m_RepeatCount << " repats" << std::endl;
@@ -42,7 +42,7 @@ namespace Wabisabi
 		KeyReleased(unsigned int keycode)
 			:KeyEvent(keycode){}
 
-		std::string ToString() const override final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event:" << m_KeyCode << std::endl;
@@ -57,7 +57,7 @@ namespace Wabisabi
 		KeyTyped(int keycode)
 			:KeyEvent(keycode){}
 
-		std::string ToString() const override final
+		std::string ToString() const override 
 		{
 			std::stringstream ss;
 			ss << GetName()<<"Event:"<< m_KeyCode << std::endl;

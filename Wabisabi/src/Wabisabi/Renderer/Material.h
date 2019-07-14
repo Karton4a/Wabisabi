@@ -20,7 +20,7 @@ namespace Wabisabi
 		};
 	public:
 		Material() {};
-		Material(Texture* diffuse, Texture* specular = nullptr, float_t shiness = 32.f, Texture* normal = nullptr);
+		Material(const std::shared_ptr<Texture>& diffuse, const std::shared_ptr<Texture>& specular = std::shared_ptr<Texture>(nullptr), float_t shiness = 32.f, const std::shared_ptr<Texture>& normal = std::shared_ptr<Texture>(nullptr));
 		Material(const RGBA& diffuse, const RGBA& specular, float_t shiness , const RGBA& ambient = RGBA(-1.f));
 		void Bind(OpenglShader& shader) const;
 		inline bool HasParam(MaterialType type) const { return (m_Type & type); };

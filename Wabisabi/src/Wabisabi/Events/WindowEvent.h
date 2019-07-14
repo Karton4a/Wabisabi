@@ -28,7 +28,7 @@ namespace Wabisabi
 	{
 	public:
 		WindowClose(){}
-		std::string ToString() const override final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: "<<std::endl;
@@ -41,7 +41,7 @@ namespace Wabisabi
 	{
 	public:
 		WindowFocus() {}
-		std::string ToString() const override final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: " << std::endl;
@@ -54,7 +54,7 @@ namespace Wabisabi
 	{
 	public:
 		WindowLostFocus() {}
-		std::string ToString() const override final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: " << std::endl;
@@ -73,7 +73,7 @@ namespace Wabisabi
 		inline std::pair<unsigned int, unsigned int> GetPosition() const { return{ m_PosX ,m_PosY }; }
 		inline unsigned int GetWidth() const { return m_PosX; }
 		inline unsigned int GetHeight() const { return m_PosY; }
-		std::string ToString() const override final
+		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << GetName() << "Event: X =" << m_PosX << ",Y = " << m_PosY << std::endl;

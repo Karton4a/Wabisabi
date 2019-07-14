@@ -10,13 +10,13 @@ namespace Wabisabi
 	public:
 		WindowsInput() {};
 	private:
-		virtual bool IsKeyPressedImpl(int keycode) override final;
-		virtual bool IsMousePressedImpl(int botton) override final;
-		virtual std::pair<float, float> MousePositionImpl() override final;
-		virtual float MousePositionXImpl() override final;
-		virtual float MousePositionYImpl() override final;
-		virtual void SetMousePositionImpl(float x, float y) override final;
-		virtual void HideCursorImpl(bool var) override final;
+		virtual bool IsKeyPressedImpl(int keycode) override;
+		virtual bool IsMousePressedImpl(int botton) override;
+		virtual std::pair<float, float> MousePositionImpl() override;
+		virtual float MousePositionXImpl() override;
+		virtual float MousePositionYImpl() override;
+		virtual void SetMousePositionImpl(float x, float y) override;
+		virtual void HideCursorImpl(bool var) override;
 	};
 
 }
