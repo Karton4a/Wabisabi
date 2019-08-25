@@ -2,27 +2,28 @@
 #include "wbpch.h"
 #include <glm/glm.hpp>
 #include "Wabisabi/Types.h"
+#include "Wabisabi/Renderer/Shader.h"
 namespace Wabisabi
 {
-	class OpenglShader
+	class OpenglShader : public Shader
 	{
 	public:
 		OpenglShader(const std::string& vertexsrc, const std::string& fragmentsrc);
-		~OpenglShader();
-		void Bind() const;
-		void UnBind() const;
-		int32_t GetLocation(const std::string& name) const;
-		void SetUniform(const std::string& name, Int num);
-		void SetUniform(const std::string& name, Float num);
-		void SetUniform(const std::string& name, uint32_t num);
-		void SetUniform(const std::string& name, bool num);
-		void SetUniform(const std::string& name, Float num1, Float num2, Float num3, Float num4);
-		void SetUniform(const std::string& name, Float4 vec);
-		void SetUniform(const std::string& name, Float num1, Float num2, Float num3);
-		void SetUniform(const std::string& name, Float3 vec);
-		void SetUniform(const std::string& name,const glm::mat4& marix);
+		virtual ~OpenglShader() override;
+		virtual void Bind() const override;
+		virtual void UnBind() const override;
+		virtual void SetUniform(const std::string& name, Int num) override;
+		virtual void SetUniform(const std::string& name, Float num) override;
+		virtual void SetUniform(const std::string& name, uint32_t num) override;
+		virtual void SetUniform(const std::string& name, bool num) override;
+		virtual void SetUniform(const std::string& name, Float num1, Float num2, Float num3, Float num4) override;
+		virtual void SetUniform(const std::string& name, Float4 vec) override;
+		virtual void SetUniform(const std::string& name, Float num1, Float num2, Float num3) override;
+		virtual void SetUniform(const std::string& name, Float3 vec) override;
+		virtual void SetUniform(const std::string& name,const glm::mat4& marix) override;
 	private:
-
+		int32_t GetLocation(const std::string& name) const;
+	private:
 		RendererId m_RendererId;
 	};
 }

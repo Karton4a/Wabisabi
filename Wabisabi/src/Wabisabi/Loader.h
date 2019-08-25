@@ -42,9 +42,9 @@ namespace Wabisabi
 			{
 				std::string MeshName;
 				std::string MaterialName;
-				std::vector<unsigned int> Vertex;
-				std::vector<unsigned int> Texture;
-				std::vector<unsigned int> Normal;
+				std::vector<int> Vertex;
+				std::vector<int> Texture;
+				std::vector<int> Normal;
 				Indices(const std::string& name) : MeshName(name) {};
 				Indices() {};
 			};
@@ -123,6 +123,7 @@ namespace Wabisabi
 					//auto beginIt = it + 1;
 					while (*it == ' ') it++;
 					std::string number;
+					Indices& localIndicies = indices.back();
 					while (it != line.end())
 					{
 						if (patternIt + 1 == pattern.end())
@@ -135,19 +136,22 @@ namespace Wabisabi
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
 							//vertexIndices.back().second.push_back(std::atoi(number.c_str()) - 1);
-							indices.back().Vertex.push_back(std::atoi(number.c_str()) - 1);
+							localIndicies.Vertex.push_back(std::atoi(number.c_str()) - 1);
+							//indices.back().Vertex.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 't')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
 							//textureIndices.back().push_back(std::atoi(number.c_str()) - 1);
-							indices.back().Texture.push_back(std::atoi(number.c_str()) - 1);
+							localIndicies.Texture.push_back(std::atoi(number.c_str()) - 1);
+							//indices.back().Texture.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == 'n')
 						{
 							number = Word(it, line.end(), *(patternIt + 1));
 							//normalIndices.back().push_back(std::atoi(number.c_str()) - 1);
-							indices.back().Normal.push_back(std::atoi(number.c_str()) - 1);
+							localIndicies.Normal.push_back(std::atoi(number.c_str()) - 1);
+							//indices.back().Normal.push_back(std::atoi(number.c_str()) - 1);
 						}
 						else if (*patternIt == '/')
 						{
@@ -156,6 +160,18 @@ namespace Wabisabi
 
 						patternIt++;
 					}
+					//WB_CORE_ASSERT();
+					auto fullTriangleCount = localIndicies.Vertex.size() / 3;
+					auto partialTriangleCount = localIndicies.Vertex.size() % 3; //TODO rewrite 
+					if (partialTriangleCount != 0)
+					{
+						for (size_t i = 0; i < partialTriangleCount; i++)
+						{
+							auto beginIt = localIndicies.Vertex.begin() + fullTriangleCount * 3 - 3;
+							//localIndicies.Vertex.insert();
+						}
+					}
+
 				}
 				else if (word == "o")
 				{
@@ -176,20 +192,20 @@ namespace Wabisabi
 				}
 				else if (word == "mtllib")
 				{
-				std::string materialFile = Word(it, line.end(), '\0');
-				std::filesystem::path root(path);
-				root.replace_filename(materialFile);
-				materialPath = root.string();
+					std::string materialFile = Word(it, line.end(), '\0');
+					std::filesystem::path root(path);
+					root.replace_filename(materialFile);
+					materialPath = root.string();
 				}
 				else if (word == "usemtl")
 				{
-				std::string materialName = Word(it, line.end(), ' ');
-				indices.back().MaterialName = materialName;
-				subMaterial.push_back(LoadOneMaterial(materialPath, materialName));
+					std::string materialName = Word(it, line.end(), ' ');
+					indices.back().MaterialName = materialName;
+					subMaterial.push_back(LoadOneMaterial(materialPath, materialName));
 				}
 				lineCount++;
 			}
-			for (auto& it = subMaterial.begin(); it != subMaterial.end() ; it++)
+			for (auto& it = subMaterial.begin(); it != subMaterial.end() ; it++) // Texture creating
 			{
 				auto res = std::find_if(subMaterial.begin(), it, [it](const MaterialTexure& el) { return el.DiffusePath == (*it).DiffusePath; });
 				if (res != it) it->Diffuse = res->Diffuse; else it->Diffuse.reset(Texture::Create(it->DiffusePath.string()));
@@ -202,6 +218,28 @@ namespace Wabisabi
 			}
 			for (Indices& el : indices)
 			{
+				WB_CORE_ASSERT(el.Vertex.size() >= el.Texture.size() || el.Vertex.size() >= el.Normal.size(), path);
+				auto vertexMax = std::max_element(el.Vertex.cbegin(), el.Vertex.cend()); 
+				auto textureMax = std::max_element(el.Texture.cbegin(), el.Texture.cend());
+				auto normalMax = std::max_element(el.Normal.cbegin(), el.Normal.cend());
+				for (size_t i = 0; i < el.Vertex.size(); i++)
+				{
+					if (el.Vertex[i] < 0)
+					{
+						el.Vertex[i] = *vertexMax - el.Vertex[i] + 2;
+					}
+					if (textureMax != el.Texture.end() && el.Texture[i] < 0)
+					{
+						el.Texture[i] = *textureMax - el.Texture[i] + 2;
+					}
+					if (normalMax != el.Normal.end() && el.Normal[i] < 0)
+					{
+						el.Normal[i] = *normalMax - el.Normal[i] + 2;
+					}
+				}
+			}
+			for (Indices& el : indices)
+			{
 				meshes.emplace_back(vertexCoordinates, textureCoordinates, normalCoordinates, el.Vertex, el.Texture, el.Normal);
 				meshes.back().SetName(el.MeshName);
 				int res = -1;
@@ -209,7 +247,7 @@ namespace Wabisabi
 				{
 					if (subMaterial[i].Name == el.MaterialName)
 					{
-						res = i;
+						res = static_cast<int>(i);
 					}
 				}
 				meshes.back().SetMaterialId(res);
@@ -277,7 +315,7 @@ namespace Wabisabi
 		struct MaterialTexure
 		{
 			std::string Name;
-			float Shiness;
+			double Shiness;
 			float Transparency;
 			RGBA AmbientIntensvity;
 			RGBA DiffuseIntensvity;

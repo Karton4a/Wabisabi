@@ -130,6 +130,11 @@
     <ClInclude Include="src\Wabisabi\Renderer\Mesh.h" />
     <ClInclude Include="src\Wabisabi\Renderer\Model.h" />
     <ClInclude Include="src\Wabisabi\Types.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\ShaderManager.h" />
+    <ClInclude Include="src\Platform\Opengl\OpenglShaderManager.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\RenderQueue.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Interface\Renderable.h" />
+    <ClInclude Include="src\Wabisabi\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Opengl\OpenglBuffer.cpp">
@@ -186,5 +191,9 @@
     <ClCompile Include="src\Wabisabi\Renderer\Material.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Wabisabi\Renderer\Model.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\ShaderManager.cpp" />
+    <ClCompile Include="src\Platform\Opengl\OpenglShaderManager.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\RenderQueue.cpp" />
+    <ClCompile Include="src\Wabisabi\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>

@@ -114,7 +114,7 @@ namespace Wabi {
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glCullFace(GL_BACK);
 		//Mesh mesh("models/teapot.obj");
-		Model mod("models/nanosuit/nanosuit.obj"); // models/ball/earth_ball.obj nanosuit/nanosuit.obj
+		Model mod("models/nanosuit/nanosuit.obj"); // models/ball/earth_ball.obj nanosuit/nanosuit.obj //models/companion/Portal_Companion_Cube.obj
 	
 		Material mat(std::shared_ptr<Texture>(Texture::Create("texture/container.png")), std::shared_ptr<Texture>(Texture::Create("texture/container_specular.png")),32);
 		mat.Bind(*m_Shader);
@@ -205,8 +205,8 @@ namespace Wabi {
 			lightShader.Bind();
 			//glDrawArrays(GL_TRIANGLES, 0, 36);
 			teapotShader.Bind();
-			mod.SetPosition({ 0.f,-0.0f,-3.f });
-			mod.Rotate(1.f, {0.f,1.f,0.f});
+			//mod.SetPosition({ 0.f,-0.0f,-3.f });
+			//mod.Rotate(1.f, {0.f,1.f,0.f});
 			//mod.SetSize({0.05f,0.05f,0.05f});
 			m_Shader->SetUniform("u_Model", mod.GetModel());
 			m_Shader->Bind();

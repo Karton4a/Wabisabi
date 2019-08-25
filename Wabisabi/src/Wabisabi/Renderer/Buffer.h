@@ -88,7 +88,18 @@ namespace Wabisabi
 				m_Stride += el.Size;
 			}
 		}
-		const LayoutElement& operator +=(const LayoutElement& el)
+		bool operator== (const BufferLayout& layout) const
+		{
+			auto argumentLayout = layout.GetLayout();
+			if (argumentLayout.size() != m_Layout.size()) return false;
+			bool res = true;
+			for (size_t i = 0;i< m_Layout.size();i++)
+			{
+				res = res && (m_Layout[i].Type == argumentLayout[i].Type && m_Layout[i].Name == argumentLayout[i].Name);
+			}
+			return res;
+		}
+		BufferLayout& operator +=(const LayoutElement& el)
 		{
 			if (m_Layout.empty())
 			{
@@ -102,7 +113,7 @@ namespace Wabisabi
 				m_Layout[last].Offset = m_Layout[last - 1].Offset + m_Layout[last - 1].Size;
 				m_Stride += m_Layout[last].Size;
 			}
-			return el;
+			return *this;
 		}
 		inline const std::vector<LayoutElement>& GetLayout() const  { return m_Layout; }
 		inline const uint32_t& GetStride() const { return m_Stride; }

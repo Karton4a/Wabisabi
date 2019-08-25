@@ -54,7 +54,7 @@ namespace Wabisabi
 
 		m_VertexBuffers.push_back(buffer);
 	}
-	void OpenglVertexArray::AddVertexBuffer(const void* data, uint32_t size, BufferLayout& layout)
+	void OpenglVertexArray::AddVertexBuffer(const void* data, size_t size, BufferLayout& layout)
 	{
 		std::shared_ptr<VertexBuffer> buffer(VertexBuffer::Create(data, size));
 		buffer->SetLayout(layout);
