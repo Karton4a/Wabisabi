@@ -40,7 +40,6 @@ namespace Wabi {
 
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight(), 0.1f, 100.0f);
 		m_Shader->SetUniform("u_Proj", proj);
-		
 		float vertices[] = {
 			// positions          // normals           // texture coords
 			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
@@ -115,6 +114,7 @@ namespace Wabi {
 		//glCullFace(GL_BACK);
 		//Mesh mesh("models/teapot.obj");
 		Model mod("models/nanosuit/nanosuit.obj"); // models/ball/earth_ball.obj nanosuit/nanosuit.obj //models/companion/Portal_Companion_Cube.obj
+
 	
 		Material mat(std::shared_ptr<Texture>(Texture::Create("texture/container.png")), std::shared_ptr<Texture>(Texture::Create("texture/container_specular.png")),32);
 		mat.Bind(*m_Shader);

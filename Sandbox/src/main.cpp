@@ -5,7 +5,7 @@ class UserLayer : public Wabi::Layer
 {
 public:
 	UserLayer()
-		:Wabi::Layer("Examle")
+		: Wabi::Layer("Examle")
 	{
 
 	}

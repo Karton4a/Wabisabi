@@ -131,7 +131,7 @@ namespace Wabisabi
 	class VertexBuffer
 	{
 	public:
-		virtual ~VertexBuffer() {};
+		virtual ~VertexBuffer()= default;
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;
 		virtual void Reset(const void* data, uint32_t size) const = 0;
